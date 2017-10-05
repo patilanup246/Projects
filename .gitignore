@@ -45,6 +45,22 @@ coverage.xml
 *.cover
 .hypothesis/
 
+
+*.crx
+*.exe
+.pydevproject
+.project
+*input*
+*output*
+*.xlsx
+*.prefs
+*.csv
+*.txt
+*.html
+*.pkl
+
+
+
 # Translations
 *.mo
 *.pot
