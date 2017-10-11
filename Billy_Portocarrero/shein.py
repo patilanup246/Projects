@@ -18,7 +18,8 @@ wr.writerow (csv_headers)
 
 def get_products():
     product_links = []
-    starting_urls = ['http://us.shein.com/Sweaters-c-1734',
+    starting_urls = [
+                    'http://us.shein.com/Sweaters-c-1734',
                     'http://us.shein.com/Sweatshirts-c-1773',
                     'http://us.shein.com/Shirts-c-1733',
                     'http://us.shein.com/US-Clothing-vc-34769',
