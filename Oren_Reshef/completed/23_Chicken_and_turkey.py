@@ -13,14 +13,14 @@ from selenium import webdriver
 import time 
 from time import gmtime, strftime
 
-site_name = 'Matrix_Catalog'+'_'+strftime("%Y-%m-%d%H-%M-%S", gmtime())
+site_name = 'Chicken_abd_turkey'+'_'+strftime("%Y-%m-%d%H-%M-%S", gmtime())
 try:
     os.makedirs(site_name)
 except:
     pass
 
 
-starting_url = 'http://matrixcatalog.co.il/NBCompetitionRegulations.aspx'
+starting_url = 'http://prices.super-bareket.co.il/'
 
 
 
@@ -28,11 +28,11 @@ starting_url = 'http://matrixcatalog.co.il/NBCompetitionRegulations.aspx'
 r = requests.get(starting_url).text
 pq = PyQuery(r)
 #time.sleep(10)
-for g in pq('table tr'):
+for g in pq('.Promofull.allFile a'):
     try:
-        print (pq(g)('td a').attr('href'))
-        print (pq(g)('td:nth-child(2)').text())
-        urllib.request.urlretrieve ('http://matrixcatalog.co.il/'+pq(g)('td a').attr('href'), site_name+'/'+pq(g)('td:nth-child(2)').text()+'_'+pq(g)('td:nth-child(1)').text())
+
+        print (g.text)
+        urllib.request.urlretrieve ('http://prices.super-bareket.co.il//'+g.attrib['href'], site_name+'/'+g.text)
         
     #time.sleep(10)
     except Exception as e:

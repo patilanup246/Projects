@@ -64,6 +64,6 @@ for row in input_f:
     except Exception as e:
         print (e)
         pass
-#     finally:
-#         driver.quit()
+    finally:
+        driver.quit()
 
