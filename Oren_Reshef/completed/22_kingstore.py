@@ -30,8 +30,10 @@ r = requests.get(starting_url).json()
 for g in r:
     try:
         if g['TypeExpFile'] == 'gz':
-            print (g['FileNm'])
-            urllib.request.urlretrieve ('https://www.kingstore.co.il/Food_Law/Download/'+g['FileNm'], site_name+'/'+g['FileNm'])
+            name_link = g['FileNm'].lower()
+            if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
+                print (g['FileNm'])
+                urllib.request.urlretrieve ('https://www.kingstore.co.il/Food_Law/Download/'+g['FileNm'], site_name+'/'+g['FileNm'])
         
     except Exception as e:
         print (e)

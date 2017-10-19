@@ -28,9 +28,11 @@ for fold in pq('table tr td a'):
     
     p = PyQuery(requests.get(starting_url+fold.attrib['href']+'/gz/').text)
     for gz in p('table tr td a'):
-        print (starting_url+'/'+fold.attrib['href']+'/gz/'+gz.attrib['href'])
-        try:
-            if not gz.attrib['href'] == '/':
-                urllib.request.urlretrieve (starting_url+'/'+fold.attrib['href']+'/'+gz.attrib['href'], site_name+'/'+gz.attrib['href'])
-        except Exception as e:
-            pass
+        name_link = gz.attrib['href'].lower()
+        if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
+            print (starting_url+'/'+fold.attrib['href']+'/gz/'+gz.attrib['href'])
+            try:
+                if not gz.attrib['href'] == '/':
+                    urllib.request.urlretrieve (starting_url+'/'+fold.attrib['href']+'/'+gz.attrib['href'], site_name+'/'+gz.attrib['href'])
+            except Exception as e:
+                pass

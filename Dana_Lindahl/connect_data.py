@@ -26,7 +26,7 @@ password = 'NewLogin456'
 #creating a output file
 file_export = open('connect_data_output'+'_'+strftime("%Y-%m-%d_%H-%M-%S", gmtime())+'.csv', 'w', newline='')
 wr = csv.writer(file_export, quoting=csv.QUOTE_ALL)
-headers = ['URL','Name', 'Website','Headquarters','Phone','Industries','Employees','Revenue','Ownership']
+headers = ['URL','Name', 'Website','Headquarters','Phone','Industries','Employees','Revenue','Ownership','Website']
 wr.writerow(headers)
 target_url = open('target_url.txt').read()
 
@@ -59,19 +59,22 @@ def login_to_connect_data(driver):
 
 def get_all_links(driver):
     temp_links = []
-    time.sleep(10)
+    time.sleep(5)
     while True:
-        time.sleep(3)
-        all_links = driver.find_elements_by_css_selector('.companyName')
-        for link in all_links:
-            temp_links.append(link.get_attribute("href"))
         
+        all_links = driver.find_elements_by_css_selector('.name')
+        for link in all_links:
+            try:
+                temp_links.append((link.find_element_by_css_selector('.companyName').get_attribute("href"),link.find_element_by_css_selector('.website').text))
+            except Exception as e:
+                pass
         
         page_length_css = len(driver.find_elements_by_css_selector('.table-navigation-button-next.table-navigation-image.table-navigation-next-image'))
         if page_length_css == 4:
             break
         next_page = driver.find_elements_by_css_selector('.table-navigation-button-next.table-navigation-image.table-navigation-next-image-active')
         next_page[0].click()
+        time.sleep(3)
     return temp_links
 
     
@@ -83,13 +86,14 @@ driver.quit()
 count = 0
 total_results = str(len(results_links)) 
 for result in results_links:
-    print ('Count : '+str(count)+'/'+total_results+'. Extracting - '+result)
-    r = requests.get(result).text
+    print ('Count : '+str(count)+'/'+total_results+'. Extracting - '+result[0])
+    r = requests.get(result[0]).text
     pq = PyQuery(r)
     result_dataset = []
-    result_dataset.append(str(result))
+    result_dataset.append(str(result[0]))
     for data in pq('.seo-company-info tr td:nth-child(2)'):
         result_dataset.append(str(data.text).strip())
+    result_dataset.append(str(result[1]))
     wr.writerow(result_dataset)
     count+=1
 

@@ -67,7 +67,20 @@ try:
     
 
     for l in link_container:
-        driver.get(l)
+        name_link = str(l).lower().split('/')[-1]
+        if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
+            print (name_link)
+            if not '.xml' in name_link:  
+                driver.get(l)
+                
+            else:
+                driver.get(l)
+                try:
+                    with open(site_name+'/'+name_link, 'w', encoding='utf-8') as f:
+                        f.write(str(driver.find_element_by_css_selector('#webkit-xml-viewer-source-xml').get_attribute('innerHTML')))
+
+                except Exception as e:
+                    print(e)
         time.sleep(3)
     
     

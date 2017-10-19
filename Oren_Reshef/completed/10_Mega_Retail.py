@@ -22,12 +22,13 @@ pq = PyQuery(r_main)
 #print (r_main)
 gz_list = []
 page_num = 1
-for fold in pq('table tr td:nth-child(1) a'):
-    print (fold.attrib['href'])
-    print (starting_url+fold.attrib['href'])
-    
-    p = PyQuery(requests.get(starting_url+fold.attrib['href']).text)
-    for gz in p('table tr td:nth-child(1) a'):
-        print (starting_url+'/'+fold.attrib['href']+'/'+gz.attrib['href'])
-        if not gz.attrib['href'] == '/':
+fold = pq('table tr td:nth-child(1) a')[1]
+print (fold.attrib['href'])
+print (starting_url+fold.attrib['href'])
+
+p = PyQuery(requests.get(starting_url+fold.attrib['href']).text)
+for gz in p('table tr td:nth-child(1) a'):
+    print (starting_url+'/'+fold.attrib['href']+'/'+gz.attrib['href'])
+    if not gz.attrib['href'] == '/':
+        if 'promofull' in gz.attrib['href'].lower() or 'pricefull' in gz.attrib['href'].lower() or 'stores' in gz.attrib['href'].lower():
             urllib.request.urlretrieve (starting_url+'/'+fold.attrib['href']+'/'+gz.attrib['href'], site_name+'/'+gz.attrib['href'])
