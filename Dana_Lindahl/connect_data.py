@@ -73,8 +73,8 @@ def get_all_links(driver):
         if page_length_css == 4:
             break
         next_page = driver.find_elements_by_css_selector('.table-navigation-button-next.table-navigation-image.table-navigation-next-image-active')
-        next_page[0].click()
-        time.sleep(3)
+        driver.execute_script("arguments[0].click();", next_page[0])
+        time.sleep(10)
     return temp_links
 
     
