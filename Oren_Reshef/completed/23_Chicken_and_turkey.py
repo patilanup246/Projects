@@ -22,18 +22,37 @@ except:
 
 starting_url = 'http://prices.super-bareket.co.il/'
 
+chromeOptions = webdriver.ChromeOptions()
+prefs = {"download.default_directory" : os.getcwd()+'\\'+site_name,'profile.default_content_setting_values.automatic_downloads': 1}
+chromeOptions.add_experimental_option("prefs",prefs)
+driver = webdriver.Chrome(chrome_options=chromeOptions)
 
+driver.get(starting_url)
 
+driver.find_element_by_id('filterBtn').click()    
+time.sleep(10) 
+
+all_links = driver.find_elements_by_css_selector('.allFile a')
+promofull = 0
+pricefull = 0
+stores = 0
+for link in all_links:
+    
+    if 'promofull' in link.text.lower() and promofull == 0:
+        print (link.text)
+        urllib.request.urlretrieve (link.get_attribute('href'), site_name+'/'+link.text)
+        promofull= 1
+    if 'pricefull' in link.text.lower() and pricefull == 0:
+        print (link.text)
+        urllib.request.urlretrieve (link.get_attribute('href'), site_name+'/'+link.text)
+        pricefull = 1
+    if 'stores' in link.text.lower() and stores == 0:
+        print (link.text)
+        urllib.request.urlretrieve (link.get_attribute('href'), site_name+'/'+link.text)
+        stores = 1
         
-r = requests.get(starting_url).text
-pq = PyQuery(r)
-#time.sleep(10)
-for g in pq('.Promofull.allFile a'):
-    try:
+    if promofull == 1 and pricefull == 1 and stores == 1:
+        break
+    
 
-        print (g.text)
-        urllib.request.urlretrieve ('http://prices.super-bareket.co.il//'+g.attrib['href'], site_name+'/'+g.text)
-        
-    #time.sleep(10)
-    except Exception as e:
-        print (e)
+driver.quit()
