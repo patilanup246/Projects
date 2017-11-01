@@ -35,7 +35,8 @@ while True:
         driver.find_element_by_css_selector('.next-pagination.page-link.disabled')
         break
     except Exception as e:
-        driver.find_element_by_css_selector('.next-pagination.page-link').click()
+        ele1 = driver.find_element_by_css_selector('.next-pagination.page-link')
+        driver.execute_script("arguments[0].click();", ele1)
 
 for link in all_links:
     driver.get(link)
