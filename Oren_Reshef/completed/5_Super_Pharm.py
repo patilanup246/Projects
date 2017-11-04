@@ -36,11 +36,14 @@ try:
             break
         
         #time.sleep(10)
-        for g in driver.find_elements_by_css_selector('table tr td a'):
+        for g in driver.find_elements_by_css_selector('table tr'):
             try:
-                driver.execute_script("arguments[0].click();", g)
+                name_link = g.find_element_by_css_selector('td:nth-child(2)').text.lower()
+                if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
+                    driver.execute_script("arguments[0].click();", g.find_element_by_css_selector('td a'))
             except Exception as e:
                 print (e)
-        time.sleep(10)
+        time.sleep(60)
+        page_num+=1
 finally:
     driver.quit()

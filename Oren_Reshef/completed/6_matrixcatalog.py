@@ -31,8 +31,10 @@ pq = PyQuery(r)
 for g in pq('table tr'):
     try:
         print (pq(g)('td a').attr('href'))
-        print (pq(g)('td:nth-child(2)').text())
-        urllib.request.urlretrieve ('http://matrixcatalog.co.il/'+pq(g)('td a').attr('href'), site_name+'/'+pq(g)('td:nth-child(2)').text()+'_'+pq(g)('td:nth-child(1)').text())
+        name_link =  str(pq(g)('td a').attr('href')).lower()
+        print (name_link)
+        if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
+            urllib.request.urlretrieve ('http://matrixcatalog.co.il/'+pq(g)('td a').attr('href'), site_name+'/'+pq(g)('td:nth-child(2)').text()+'_'+pq(g)('td:nth-child(1)').text())
         
     #time.sleep(10)
     except Exception as e:

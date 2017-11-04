@@ -63,6 +63,7 @@ try:
 
     for l in link_container:
         name_link = str(l).lower().split('/')[-1]
+        print (name_link)
         if 'promofull' in name_link or 'pricefull' in name_link or 'stores' in name_link:
             print (name_link)
             if not '.xml' in name_link:  
@@ -76,8 +77,9 @@ try:
 
                 except Exception as e:
                     print(e)
-        time.sleep(3)
+            time.sleep(20)
     
     
 finally:
+    time.sleep(180)
     driver.quit()

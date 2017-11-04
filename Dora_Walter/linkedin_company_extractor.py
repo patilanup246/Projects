@@ -32,12 +32,15 @@ time.sleep(10)
 output_f = open('company_details.txt','w',encoding='utf-8')
 for comp_id in open('company_ids.txt').read().split('\n'):
     driver.get('https://www.linkedin.com/sales/accounts/insights?companyId='+str(comp_id))
-    time.sleep(5)
+    time.sleep(3)
     output = str(comp_id)+'\t'
-    output += driver.find_element_by_css_selector('.acct-name').text+'\t'
-    output += driver.find_element_by_css_selector('.industry.detail').text+'\t'
-    output += driver.find_element_by_css_selector('.account-term-desc.addr-term-desc').text+'\t'
-    output += driver.find_element_by_css_selector('.account-term:nth-child(3) p a').text+'\n'
+    try:
+        output += driver.find_element_by_css_selector('.acct-name').text+'\t'
+        output += driver.find_element_by_css_selector('.industry.detail').text+'\t'
+        output += driver.find_element_by_css_selector('.account-term-desc.addr-term-desc').text+'\t'
+        output += driver.find_element_by_css_selector('.account-term:nth-child(3) p a').text+'\n'
+    except Exception as e:
+        output += '\n'
     print (output)
     output_f.write(output)
     output_f.flush()
