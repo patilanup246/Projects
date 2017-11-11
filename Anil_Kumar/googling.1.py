@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urllib.parse
 from selenium import webdriver
 from openpyxl import load_workbook
@@ -29,8 +30,8 @@ driver.get('https://www.google.nl')
 
 
 
-input_f = open('googling_input').read().split('\n')
-output_f = open('googling_output','w')
+input_f = open('googling_input',encoding='utf-8').read().split('\n')
+output_f = open('googling_output','w',encoding='utf-8')
 
 
 
@@ -39,31 +40,36 @@ for row in input_f:
     output_f.write(row+'\t')
     output_f.flush()
     try:
-        print (row)
-        driver.get('https://www.google.com/search?q='+ urllib.parse.quote(str(row), safe=''))
+        driver.get('https://www.google.nl/search?q='+ urllib.parse.quote(str(row), safe=''))
+        time.sleep(1)
         #driver.find_element_by_css_selector('.gsfi[title="Search"]').send_keys(Keys.RETURN)
         #time.sleep(2)
+        try:
+            a = (driver.find_element_by_css_selector('[class="_XWk"]').text)
+            print (a)
+            #output_f.write(a)
+            #output_f.flush()
+        except:
+            print ('None')
         
         try:
             output_f.write(str(driver.find_element_by_css_selector('span._Xbe._ZWk.kno-fv [data-dtype="d3ph"] span').text)+'\t')
         except:
             output_f.write('\t')
-        
+         
         try:
             output_f.write(str(driver.find_element_by_css_selector('._b1m.kp-hc a.ab_button[role="button"]').get_attribute('href'))+'\t')
         except:
             output_f.write('\t')
-        
+         
         try:
-            output_f.write(str(driver.find_element_by_css_selector('cite:nth-child(1)').text)+'\n')
+            output_f.write(str(driver.find_element_by_css_selector('[class="_Xbe"]').text)+'\n')
         except:
             output_f.write('\n')
-        
+         
         output_f.flush()
         
     except Exception as e:
-        print (e)
         pass
-    finally:
-        driver.quit()
+
 

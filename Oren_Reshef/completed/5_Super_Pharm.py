@@ -22,7 +22,7 @@ except:
 starting_url = 'http://prices.super-pharm.co.il/?type=&date=&page='
 
 
-page_num = 1
+page_num = 220
 chromeOptions = webdriver.ChromeOptions()
 prefs = {"download.default_directory" : os.getcwd()+'\\'+site_name,'profile.default_content_setting_values.automatic_downloads': 1}
 chromeOptions.add_experimental_option("prefs",prefs)
@@ -43,7 +43,7 @@ try:
                     driver.execute_script("arguments[0].click();", g.find_element_by_css_selector('td a'))
             except Exception as e:
                 print (e)
-        time.sleep(60)
+        time.sleep(30)
         page_num+=1
 finally:
     driver.quit()

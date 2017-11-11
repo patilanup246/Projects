@@ -272,8 +272,8 @@ headers = {
 urls = open('urls.txt', 'r').read().split('\n')
 #print (urls[1])
 f_andrew_output = open('similarweb_output.txt', 'w')
-head = ['URL','Visits','PagePerVisit','BounceRate','TimeOnSite','Direct','Referrals','Search','Social','Paid Referrals','Appstore Internals','Self Referrals',
-        'Mail','Paid Search Share','Top Categories And Fills','Top Also Visited','Top Referring','Top Country Shares','Similar Sites', 'Time']
+head = ['URL','Visits','PagePerVisit','BounceRate','TimeOnSite','Direct','Referrals','Search','Social','Paid Referrals',
+        'Mail','Top Categories And Fills','Top Also Visited','Top Referring','Top Country Shares','Similar Sites', 'Time']
 f_andrew_output.write('\t'.join(head)+'\n')
 
 def worker(q):
@@ -304,10 +304,11 @@ def worker(q):
                 str(j['TrafficSources']['Search'] * 100) + '\t' +
                 str(j['TrafficSources']['Social'] * 100) + '\t' +
                 str(j['TrafficSources']['Paid Referrals'] * 100) + '\t' +
-                str(j['TrafficSources']['Appstore Internals'] * 100) + '\t' +
-                str(j['TrafficSources']['Self Referrals'] * 100) + '\t' +
-                str(j['TrafficSources']['Mail'] * 100) + '\t' +
-                str(j['PaidSearchShare'] * 100) + '\t')
+                #str(j['TrafficSources']['Appstore Internals'] * 100) + '\t' +
+                #str(j['TrafficSources']['Self Referrals'] * 100) + '\t' +
+                str(j['TrafficSources']['Mail'] * 100) + '\t' 
+                #str(j['PaidSearchShare'] * 100) + '\t'
+                )
                 
                 
                 #f_andrew_output.write()
@@ -331,8 +332,8 @@ def worker(q):
                 c =[]
                 for coun in j['TopCountryShares']:
                     if j['TopCountryShares'].index(coun) < 3:
-                       #print (coun['Country'])
-                       c.append(countries[str(coun['Country'])]+'-->'+str(coun['Value']*100))
+                        #print (coun['Country'])
+                        c.append(countries[str(coun['Country'])]+'-->'+str(coun['Value']*100))
 
                 #website_details+=(str(j['EstimatedMonthlyVisits']['2016-12-01']) + '\t')
                 # website_details+=(str(j['EstimatedMonthlyVisits']['2017-02-01']) + '\t')
@@ -352,7 +353,7 @@ def worker(q):
         
         
             except Exception as e:
-                #print (e)
+                print (e)
                 print ('Site : '+ url+'\t\t : No info found\n')
                 website_details = (url+'\n')
             finally:

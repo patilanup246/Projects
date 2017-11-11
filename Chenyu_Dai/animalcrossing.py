@@ -11,7 +11,7 @@ import re
 import csv
 file_export = open('data_output.csv', 'w', newline='',encoding='utf-8')
 wr = csv.writer(file_export, quoting=csv.QUOTE_ALL)
-headers = ['Name','Items','Theme', 'Selling Price','Cost to Make','Buying Price','Time to Craft (s)','Variation','Size','Furniture Reaction','Category','Series','Animal Gift Exclusive','Difficulty to Unlock']
+headers = ['Name','Items','Theme', 'Selling Price','Cost to Make','Buying Price','Time to Craft (s)','Variation','Size','Furniture Reaction','Category','Series','Animal Gift Exclusive','Difficulty to Unlock','Special Requests from Contacts']
 wr.writerow(headers)
 #get furniture json
 url = 'https://s3.us-east-2.amazonaws.com/gamepress-json/acpc/furniture.json'
@@ -32,11 +32,16 @@ for f in furn:
     except Exception as e:
         details.append('')
     i_num=0
-    for i in pq('#furniture-details-table tr td'):
-        
+    for i in pq('#furniture-details-table tr td'):    
         if not i_num == 0:
             details.append(pq(i).text())
         i_num = 1
+    
+    special_request = []
+    for i in pq('.views-field.views-field-title [class="field-content"] a'):
+        special_request.append(i.text)
+    details.append(', '.join(special_request))
+    
     wr.writerow(details)
     
     
