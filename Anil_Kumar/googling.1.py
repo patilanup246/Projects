@@ -36,6 +36,7 @@ output_f = open('googling_output','w',encoding='utf-8')
 
 
 for row in input_f:
+    print (row)
     time.sleep(1)
     output_f.write(row+'\t')
     output_f.flush()
@@ -45,12 +46,13 @@ for row in input_f:
         #driver.find_element_by_css_selector('.gsfi[title="Search"]').send_keys(Keys.RETURN)
         #time.sleep(2)
         try:
-            a = (driver.find_element_by_css_selector('[class="_XWk"]').text)
-            print (a)
+            output_f.write(str(driver.find_element_by_css_selector('[class="_Rm"]').text)+'\t')
+            #print (a)
             #output_f.write(a)
             #output_f.flush()
-        except:
-            print ('None')
+        except Exception as e:
+            print (e)
+            output_f.write('\t')
         
         try:
             output_f.write(str(driver.find_element_by_css_selector('span._Xbe._ZWk.kno-fv [data-dtype="d3ph"] span').text)+'\t')
