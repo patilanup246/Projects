@@ -11,7 +11,7 @@ profile.set_preference("privacy.trackingprotection.enabled", False)
 driver = webdriver.Firefox()
 output_firefox_file = open('output_firefox_file','w',encoding='utf-8')
 for c in open('companies.txt').read().split('\n'):
-    driver.get('https://www.linkedin.com/company/'+str(c))
+    driver.get(str(c))
     time.sleep(1)
     name = ''
     address = ''

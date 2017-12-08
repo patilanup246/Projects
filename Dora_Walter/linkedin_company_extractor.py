@@ -29,18 +29,43 @@ driver.find_element_by_id('session_password-login').send_keys('sindhu007')
 driver.find_element_by_id('btn-primary').click()
 
 time.sleep(10)
-output_f = open('company_details.txt','w',encoding='utf-8')
-for comp_id in open('company_ids.txt').read().split('\n'):
+output_f = open('linkedin_sales_nav_output','w',encoding='utf-8')
+for comp_id in open('linkedin_sales_nav_input').read().split('\n'):
     driver.get('https://www.linkedin.com/sales/accounts/insights?companyId='+str(comp_id))
-    time.sleep(3)
+    time.sleep(5)
     output = str(comp_id)+'\t'
+    
     try:
         output += driver.find_element_by_css_selector('.acct-name').text+'\t'
+    except:
+        output += '\t'
+        
+    try:
+        output += driver.find_element_by_css_selector('.location.detail').text+'\t'
+    except Exception as e:
+        #print (e)
+        output += '\t'
+        
+    try:
+        output += driver.find_element_by_css_selector('.size.detail').text+'\t'
+    except:
+        output += '\t'
+    
+    try:
         output += driver.find_element_by_css_selector('.industry.detail').text+'\t'
+    except:
+        output += '\t'    
+    
+    try:
         output += driver.find_element_by_css_selector('.account-term-desc.addr-term-desc').text+'\t'
+    except:
+        output += '\t'
+    
+    try:
         output += driver.find_element_by_css_selector('.account-term:nth-child(3) p a').text+'\n'
     except Exception as e:
         output += '\n'
     print (output)
     output_f.write(output)
     output_f.flush()
+    time.sleep(25)

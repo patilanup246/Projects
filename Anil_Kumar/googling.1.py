@@ -37,7 +37,7 @@ output_f = open('googling_output','w',encoding='utf-8')
 
 for row in input_f:
     print (row)
-    time.sleep(1)
+    #time.sleep(1)
     output_f.write(row+'\t')
     output_f.flush()
     try:
