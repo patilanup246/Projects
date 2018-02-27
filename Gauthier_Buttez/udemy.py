@@ -6,14 +6,13 @@ import urllib
 
 def get_course_id(course_url):
     headers = {
-    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    'accept-encoding': "gzip, deflate, sdch",
-    'accept-language': "en-US,en;q=0.8",
-    'Cache-Control': "no-cache",
-    'cookie': "ud_firstvisit=2017-12-27T09:40:49.872283+00:00:1eU8Cf:kpv689bNHPcjH86rax3jg7h4K0Y; new_user=true; existing_user=true; optimizelyEndUserId=oeu1514367595072r0.3008683293685195; __ssid=5e6ac83c-4459-4d3c-b121-c8db47997118; IR_gbd=udemy.com; client_id=bd2565cb7b0c313f5e9bae44961e8db2; dj_session_id=50y4uab8omqw53v6x9qgzpg2kmue141q; csrftoken=pmQx1w6TViZZb9JGFZ89B1g5Snb5bMag; access_token=NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X; __ar_v4=554CPNW4XBAX5EYKBL4HVU%3A20180026%3A3%7COKLCQMMNANCRNGGEOKKR5M%3A20180026%3A3%7CVH5RDLCI7NHB5GFMJDUBVW%3A20180026%3A3; intercom-session-sehj53dd=Q0k3SlZ6bUxOQ0JLUDVZVDdvQ3pRUWRHdFVGamVEL3cyT1Y0cUUwQzRxcks4bU50OXlBTTV2WS9QYnVWNkRIUS0tQlc5NnZ0ZlFNdnJyYjkvZ21haTlSZz09--0c823a71b3cfa1c867410cba02a91a1ac289fb01; intercom-lou-sehj53dd=1; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22true%22%2C%227514910721%22%3A%22Marketing%22%7D; optimizelyBuckets=%7B%7D; _ga=GA1.1.901433430.1514367598; _gid=GA1.1.1334547858.1514367598; IR_PI=1514367605222.z2ykoz8l5hgrm; IR_5420=1514373388283%7C0%7C1514372454005; ki_t=1514367609858%3B1514367609858%3B1514373391823%3B1%3B20; ki_r=; _ga=GA1.2.901433430.1514367598; _gid=GA1.2.1334547858.1514367598; ud_rule_vars=\"eJyFjUEKwjAURK8i2WrL_2nSNDlLoCTNV4JKME3dlN7dUBQEF65mMfPerKy4fKFCYXzGOZaUzeQ6EAGUH3gvlPYOJIUOufTaA5EwU0rXSMwc2GrZzc1lzPRYqGZwhWwtLOOAqkHecHUAbQQYoVstpdD8CGAALDvV1TnmSu3Hf9hBAWr1ze7HU1ryTG9DifdfA6JBZYRoJe-wHz6GjW0vu6lGsw==:1eU9iS:sVfa73v9ObBkKm4fPjhQB2q2keM\"; eva=SlFILR5ATzcTQhtwXkBPfgRGGzwT; __udmy_2_v57r=ca304d07b826479ba05ed3125b9b0ee4; seen=1; _px2=eyJ1IjoiNjFiMDIzYjAtZWFmNS0xMWU3LTljZmQtNzUwOWMzNmQ4Y2E5IiwidiI6IjJmYTQxMzgwLWVhZTItMTFlNy05MmJkLThmYjIwNGFiZjdmNyIsInQiOjE1MTQzNzQzMDQ4ODIsImgiOiIzYThmMTgxMjhlM2VmMmFmYmVjOTgwODQzYjExOGEzOWRiMmE1M2NkZWFlNmU1YzQ5OWU4ZTUwZjJlMTdiNjkyIn0=; _px3=0e28647da423ea4f5af65ebeb610b69882aa11573cb3836d1241404294fb52c1:yOnGGypNBPPMB5wd/ITHGFm4xuF44qIT2+Qm/LG/T/diZApv1ipECxcYLiq3yfbsj20UmGtzU+fNSIIFlYNJOA==:1000:N14pLiv7z/BBN/qR/JUbwgi+TnKaLgE/NTcHm6ehRQkZ8F7AhnmsBFgChFDYjQrSZFWQ1Kn/wC29pkeQzsYEieRXYZGoiwD3O9eevGo6M/zxzLr3zfxWx6eXMCLBlWcM9ICXNPAFFm6BvSP4110kxo6bPFV3rHKcZD8nGasNxOs=",
-    'pragma': "no-cache",
+    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+    'accept-encoding': "gzip, deflate, br",
+    'accept-language': "en-GB,en;q=0.9,en-US;q=0.8,fr;q=0.7,es;q=0.6",
+    'cache-control': "max-age=0",
+    'cookie': "ud_firstvisit=2017-06-23T18:55:55.461860+00:00:1dOTkJ:WY2XqecxQcOehOyCoJOpJnh8wjQ; __ssid=398d3243-e4e4-44d6-a7ff-898fd6c19c93; IR_PI=1498244157553-q4zrmr989lr; existing_user=true; optimizelyEndUserId=oeu1498244194449r0.3478516657705435; optimizelyBuckets=%7B%7D; _ga=GA1.1.2004580025.1498244157; ki_r=; _ga=GA1.2.2004580025.1498244157; __udmy_2_v57r=8693e451b3574b22aff387981ba148df; __udmyvstr=a6669421bf9fb59ad18528fcaac67735; EUCookieMessageShown=true; EUCookieMessageState=initial; ki_u=2e55ca0b-1216-413a-d959-ec85; ki_s=179864%3A1.0.0.0.1; seen=1; _gid=GA1.2.470225827.1516627888; _gid=GA1.1.470225827.1516627888; IR_gbd=udemy.com; access_token=ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR; csrftoken=5FdzKL7qBn7Lvw6nc18VguVZdyVshHwO; dj_session_id=hcxkl7jlfmu8xc3dvwb0ej3gd39lrwh2; client_id=bd2565cb7b0c313f5e9bae44961e8db2; __ar_v4=VH5RDLCI7NHB5GFMJDUBVW%3A20180121%3A2%7COKLCQMMNANCRNGGEOKKR5M%3A20180121%3A2%7C554CPNW4XBAX5EYKBL4HVU%3A20180121%3A2; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22false%22%2C%227514910721%22%3A%22Business%22%7D; IR_5420=1516628100388%7C0%7C1516627889634; ki_t=1498244158445%3B1516627895031%3B1516628100439%3B3%3B19; eva=\"SlFIIwxATzcTQht5XEBPfgZCGTxCQAY/XgFfY1QZV30BRB1jVFBCfAEOB2MdFVd2SlEacVlaV3YDRBt1E05XL10DCXsVQER8CUMJe1xVRXpMDg==\"; ud_rule_vars=eJx9zUEKgzAUBNCrhGxbJT8_0Z-cJSBRkxLaIo2xG_HuFWyhdNHVLIY3s_Li8yWUMHbPNKcyZUuNwaA09Khb1UvpY0RqDUHvQdEY7TBN1xS4ZXx1_Obn0g3TkudwLHQl3YPbW8elAKoEVFIyQIvKalMrbdCokxBWCMfP7L2Qw2MJe46-_GBomCCLYEHXmohk-41jyrs6jv9bhZIMfuzGtxfmgkZk:1edcFp:K_iqVzzSb4nl3goZJAFMvCBUxSk; _px2=eyJ1IjoiMGI5MGJjOTAtZmY3OS0xMWU3LTkzNTktMjMwMzJiNmI5OGZlIiwidiI6IjA4MmRmMTEwLTdiMWYtMTFlNi05NDdiLTBmZTU5YzMyNzM4MCIsInQiOjE1MTY2Mjk1MDQ1ODgsImgiOiI0NWJjNDUyMDk1NmIzODg4ZTAwNmIwMDMwMDA0NmE4NDQxODA3MDNhNDRkYmE4YTM4MDVjNDY3ODA2OTRiZGI5In0=; _px3=f88f9a9f06cbcf6a452382d299be98ef8fe2a6eb3693c8e2b2afe3ae4b2f8aa1:QWtAVIvENn7IRwNEokhfQA989MTFIiOlfBtviXmMLzL9ioEyYzuWgRJJNrSkEIygniQnHpGMCcoUzEcmwgKNVg==:1000:UnB60Fg9L5AnoSK4uRJiZ1celL+qTExtAJXy3c+Xm1iFKsudtPqBos0Ds5BxwVEiSWF5bvLJ3ykLDfA6Bye9hlLMeGAqmOvmKtNk0twS8TYVZNVkv0GO1naDoe5MCoffvPUbBss+kdFDNDikFv/yAx+9GrntTBwHyVTsUoAtmck=",
     'upgrade-insecure-requests': "1",
-    'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2683.0 Safari/537.36"
+    'user-agent': "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
     }
     #print requests.get(course_url,headers=headers).text
     pq = PyQuery(requests.get(course_url,headers=headers).text)
@@ -25,16 +24,14 @@ def subscribe(course_id):
     querystring = {"courseId":course_id}
     
     headers_subscribe = {
-        'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-        'accept-encoding': "gzip, deflate, sdch",
-        'accept-language': "en-US,en;q=0.8",
-        'Cache-Control': "no-cache",
-        'cookie': "ud_firstvisit=2017-12-27T09:40:49.872283+00:00:1eU8Cf:kpv689bNHPcjH86rax3jg7h4K0Y; new_user=true; existing_user=true; optimizelyEndUserId=oeu1514367595072r0.3008683293685195; __ssid=5e6ac83c-4459-4d3c-b121-c8db47997118; IR_gbd=udemy.com; client_id=bd2565cb7b0c313f5e9bae44961e8db2; dj_session_id=50y4uab8omqw53v6x9qgzpg2kmue141q; csrftoken=pmQx1w6TViZZb9JGFZ89B1g5Snb5bMag; access_token=NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X; _ga=GA1.1.901433430.1514367598; _gid=GA1.1.1334547858.1514367598; intercom-session-sehj53dd=b1JidzFpSUxOMEVKMVJrQm1jNzZ0aVdGdWc3RTBqUitIS3gzYzJGYlNIV2lER1I3M2VYcDZWMmJQVm53ckloUy0tSUU3QzRaWmZRMkUvWWtKQzl2bjg3QT09--006ed6db9ace059e2fc8103427225bf625e90c10; intercom-lou-sehj53dd=1; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22true%22%2C%227514910721%22%3A%22Marketing%22%7D; optimizelyBuckets=%7B%7D; eva=SlFILR5ATzcTQhtwXkBPfgRGGzwT; __udmy_2_v57r=ca304d07b826479ba05ed3125b9b0ee4; ud_rule_vars=eJx9zcEKwjAQBNBfKblqZTdNmma_JVCSZpWgUkxTL6X_bqEKguBpDsObWUTx-cKFY_9MUypjpsE3oCKY0MlWGRs8aI4NSh1sAGZFwzheEwuqxOLEzU-lH8Y5T7wv9CXd2W2tExLQ1ChraSpEAqSmPRloO40HAAJw4li9FzI_Zt4y-vKLwZICUvZktVZWfuNzypvaj__bzgBa87GrWF8gQ0av:1eU9T4:m9Zvn8lRXjHOYm5fBQuN4ADzNVc; seen=1; IR_PI=1514367605222.z2ykoz8l5hgrm; IR_5420=1514372454005%7C0%7C1514372454005; _px2=eyJ1IjoiMzQwMGJjNDAtZWFmNS0xMWU3LThlYzMtOTUwZmE0MjliODdmIiwidiI6IjJmYTQxMzgwLWVhZTItMTFlNy05MmJkLThmYjIwNGFiZjdmNyIsInQiOjE1MTQzNzMwMTQ1OTUsImgiOiJlNjFmZTEyMmNiZGYxNGE2YjEzNGEzODViNjIwNWY2MzE0NThkYmMyNmRiYzI1YzE2Y2UwN2Q1MWIxNTA3MGQ2In0=; _px3=b14cef6ae786e70b44a138e40c06effbc5f400ac66484f1e62fbfffd6411f4b3:XOYDkHXJg1IegSuQPAJfvELwc+3cFZgtsGiL3j4to8FLAZxPdeh5JRheYN94vbQWDbeK2EXPt5nc0ShQ6Q/xEA==:1000:ikNPXzFWgjEYwHYqKp6hqcA2OhM1gkDJkC7Lg3l6ljjk6nN43zgivLt/NjzaLlQMlNDWLp3o9jCfm3SKEXJtMS5cKrTmBmNDPiFnZqSVVq4fgCt497sfr8qA91i0MMz+GL5QE2S+/0IUCemz9vyr1AaZQ8kknjO0lPfiPIloyrU=; ki_t=1514367609858%3B1514367609858%3B1514372460623%3B1%3B15; ki_r=; _ga=GA1.2.901433430.1514367598; _gid=GA1.2.1334547858.1514367598",
-        'pragma': "no-cache",
-        'referer': "https://www.udemy.com/wordpress-seo-the-complete-yoast-seo-plugin-tutorial/",
-        'upgrade-insecure-requests': "1",
-        'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2683.0 Safari/537.36"
-        }
+    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+    'accept-encoding': "gzip, deflate, br",
+    'accept-language': "en-GB,en;q=0.9,en-US;q=0.8,fr;q=0.7,es;q=0.6",
+    'cookie': "ud_firstvisit=2017-06-23T18:55:55.461860+00:00:1dOTkJ:WY2XqecxQcOehOyCoJOpJnh8wjQ; __ssid=398d3243-e4e4-44d6-a7ff-898fd6c19c93; IR_PI=1498244157553-q4zrmr989lr; existing_user=true; optimizelyEndUserId=oeu1498244194449r0.3478516657705435; optimizelyBuckets=%7B%7D; _ga=GA1.1.2004580025.1498244157; ki_r=; _ga=GA1.2.2004580025.1498244157; __udmy_2_v57r=8693e451b3574b22aff387981ba148df; __udmyvstr=a6669421bf9fb59ad18528fcaac67735; EUCookieMessageShown=true; EUCookieMessageState=initial; ki_u=2e55ca0b-1216-413a-d959-ec85; ki_s=179864%3A1.0.0.0.1; seen=1; _gid=GA1.2.470225827.1516627888; _gid=GA1.1.470225827.1516627888; IR_gbd=udemy.com; access_token=ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR; csrftoken=5FdzKL7qBn7Lvw6nc18VguVZdyVshHwO; dj_session_id=hcxkl7jlfmu8xc3dvwb0ej3gd39lrwh2; client_id=bd2565cb7b0c313f5e9bae44961e8db2; __ar_v4=VH5RDLCI7NHB5GFMJDUBVW%3A20180121%3A2%7COKLCQMMNANCRNGGEOKKR5M%3A20180121%3A2%7C554CPNW4XBAX5EYKBL4HVU%3A20180121%3A2; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22false%22%2C%227514910721%22%3A%22Business%22%7D; ki_t=1498244158445%3B1516627895031%3B1516629276945%3B3%3B20; _px2=eyJ1IjoiYzg4YWE4NDAtZmY3Yi0xMWU3LWFjN2QtN2ZkYWFkMzcyNGRjIiwidiI6IjA4MmRmMTEwLTdiMWYtMTFlNi05NDdiLTBmZTU5YzMyNzM4MCIsInQiOjE1MTY2Mjk3Nzk1MjMsImgiOiI3YzA0OGYzOWRmYTg3ZGYyNDgwMmJjNmQ1N2MxNTliYTkwMmJhNTVjNTI0NDVmYTA2MGJhNThkNzNjNjQ2ZDVmIn0=; _px3=f2b8e5540389ed533e6073afef0c2398e40dcd7d2f3fce074aa30e8fec88ddb9:uDV/QiE5+1AtAVpPzvX6AsCgAU+rwkqH2M4o930KBXirhzpouasNVhbrlpuA5iWh/6eQVq19VvNYYo94SrSUCA==:1000:o8gHzdLwQtwAh2iB2Ix9V2oO33Y9Wm8UvMEFcGhGSL5Sd0zYhVxe0HpyF7Zmi81sxi4Vm1dQsZ+mLXsyK5R5+Nckq4SREBW7UHztwpcUExn0zgUW8q93GPZFoXdzteflCx4rvW63/ZZm6TlEtdkcxE++JHsqFibG4LR1ugUuDkg=; ud_rule_vars=\"eJyFzc0KgzAQBOBXkVxbJZsf3eyzBCRqUkJbpEnsRXz3SqVQeul55ptZWXHp4ouf-mfMscyJsDXSKw2D1J0ahHAhSOwMwuBA4RRonOdr9Iwqtlp2c7n047yk7I-FvsS7t3tqmeCANYdaiAokaUVSNWAMB33inDi37Ly3Qkz7xGEnV34stBVHkkCgGyUFGvlt3-_JPxaf_2GNiKL74I1tL9SiRlY=:1edcYZ:rh6s-dDqUSxP9UYpJpJqT1Rg-u8\"; eva=\"SlFIIwxATzcTQht5XEBPfgZCGTxCQBYgQVEROkxTRXQBURFzWVJDMR1RWDZMWA5uAEMceUxYR3sBR1ZtTBEGI0MHCXsVQER8BkUJe1xVRXxMDg==\"; IR_5420=1516629281316%7C0%7C1516627889634; optimizelyPendingLogEvents=%5B%22n%3Dengagement%26u%3Doeu1498244194449r0.3478516657705435%26wxhr%3Dtrue%26time%3D1516629343.53%26f%3D8897772323%26g%3D305018473%22%5D",
+    'referer': "https://www.udemy.com/personalbrand/",
+    'upgrade-insecure-requests': "1",
+    'user-agent': "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36"
+    }
     
     response = requests.request("GET", url, headers=headers_subscribe, params=querystring)
     
@@ -43,55 +40,60 @@ def get_videos_id(course_id):
     try:
         url = "https://www.udemy.com/api-2.0/courses/{}/cached-subscriber-curriculum-items".format(course_id)
         
-        querystring = {"fields[asset]":"@min,title,filename,asset_type,external_url,length,status","fields[chapter]":"@min,description,object_index,title,sort_order","fields[lecture]":"@min,object_index,asset,supplementary_assets,sort_order,is_published,is_free","fields[practice]":"@min,object_index,title,sort_order,is_published","fields[quiz]":"@min,object_index,title,sort_order,is_published","page_size":"9999","fields%5Bquiz%5D":"@min,object_index,title,sort_order,is_published","fields%5Bpractice%5D":"@min,object_index,title,sort_order,is_published","fields%5Blecture%5D":"@min,object_index,asset,supplementary_assets,sort_order,is_published,is_free","fields%5Bchapter%5D":"@min,description,object_index,title,sort_order","fields%5Basset%5D":"@min,title,filename,asset_type,external_url,length,status"}
         
+
+        querystring = {"fields[asset]":"@min,title,filename,asset_type,external_url,length,status","fields[chapter]":"@min,description,object_index,title,sort_order","fields[lecture]":"@min,object_index,asset,supplementary_assets,sort_order,is_published,is_free","fields[practice]":"@min,object_index,title,sort_order,is_published","fields[quiz]":"@min,object_index,title,sort_order,is_published","page_size":"9999","fields%5Bquiz%5D":"@min,object_index,title,sort_order,is_published","fields%5Bpractice%5D":"@min,object_index,title,sort_order,is_published","fields%5Blecture%5D":"@min,object_index,asset,supplementary_assets,sort_order,is_published,is_free","fields%5Bchapter%5D":"@min,description,object_index,title,sort_order","fields%5Basset%5D":"@min,title,filename,asset_type,external_url,length,status"}
+
         headers = {
-            'accept': "application/json, text/plain, */*",
-            'accept-encoding': "gzip, deflate, sdch",
-            'accept-language': "en-US,en;q=0.8",
-            'authorization': "Bearer NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X",
-            'Cache-Control': "no-cache",
-            'cookie': "ud_firstvisit=2017-12-27T09:40:49.872283+00:00:1eU8Cf:kpv689bNHPcjH86rax3jg7h4K0Y; new_user=true; existing_user=true; optimizelyEndUserId=oeu1514367595072r0.3008683293685195; __ssid=5e6ac83c-4459-4d3c-b121-c8db47997118; IR_gbd=udemy.com; client_id=bd2565cb7b0c313f5e9bae44961e8db2; dj_session_id=50y4uab8omqw53v6x9qgzpg2kmue141q; csrftoken=pmQx1w6TViZZb9JGFZ89B1g5Snb5bMag; access_token=NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22true%22%2C%227514910721%22%3A%22Marketing%22%7D; optimizelyBuckets=%7B%7D; IR_PI=1514367605222.z2ykoz8l5hgrm; IR_5420=1514368485969%7C0%7C1514367605222; _ga=GA1.2.901433430.1514367598; _gid=GA1.2.1334547858.1514367598; _ga=GA1.1.901433430.1514367598; _gid=GA1.1.1334547858.1514367598; ki_t=1514367609858%3B1514367609858%3B1514368512193%3B1%3B13; ki_r=; intercom-session-sehj53dd=STFzSEFjL0VSdzZHaFFtVlF1bjFVenQvTUJVNWFDOE1Ga0NSN0g2ZXFnZ2JXd1BGYWpVZ1BBWTZvWURmbktkZS0tMW9HZ0dqeUh5eEw4dGV3eGdkemJDdz09--029555f334b774cf1275fcfa80d799cddc8c3bbc; intercom-lou-sehj53dd=1; _px2=eyJ1IjoiMDU3MmNhYzAtZWFlYy0xMWU3LWI0ZjUtOWY4MmIyYTJmODBiIiwidiI6IjJmYTQxMzgwLWVhZTItMTFlNy05MmJkLThmYjIwNGFiZjdmNyIsInQiOjE1MTQzNjk5Nzk1ODIsImgiOiIwNDAwYjI3YWM4YjM2NDdhY2IyZDNiZWNhM2FkNmM0MzU3NWI3MGE1NjFkYTI2NWE1NTFhMzM3MGViOGNkMWZkIn0=; _px3=f78b3ffc8a4d45fee7464d6dcaee8a108fff66f6c363b3e2c1c536f32a755c5c:KBWfPg0XsGENva/zMbRK6lw6D7SuKUiDq4LcTuer4R0awp8kzh+X3f2PBXlcl2tJBGDOfttnrAp526XbHc56sA==:1000:rc47jNcltKDDa/QOgzowRLElqKEhQ13mJjDUmG/7ZzrM3n41sHSkHOgclObgTLskD7Af+61M+1+o3psglQJDe+kFnv/4c0Sj9fcXVrYMBbq3TRkEUwLYRVoXfPWleul1A3KOwGCPlSruUfMtSf4bOdRYOIsKJYw8uJhpjg25AyM=; eva=SlFILR5ATzcTQhtwXkBPfgRGGzwT; ud_rule_vars=\"eJx9zcEKwjAQBNBfKblqyybdmG6-JVCSZpWgUkxTL6X_bqEKHsTTHIY3s4ji84ULx_6ZplTGbAffAkYwoVMnNBQ8aI6tVDpQAGa0wzheEwtbicWJm59KP4xznnhf6Eu6s9taJxRIU0tVK1MBWa1tS42WqDo8AFgAJ47VeyHzY-Ytoy8_MYJFakhrJPWNzylvaj_-bzsDkszHrmJ9ASlMRr8=:1eU9DQ:ZA0OPWbF3dOwMlIoEcffR9SBh0s\"; __udmy_2_v57r=ca304d07b826479ba05ed3125b9b0ee4; seen=1",
-            'pragma': "no-cache",
-            'referer': "https://www.udemy.com/seo-tutorial/learn/v4/t/lecture/7141998?start=0",
-            'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2683.0 Safari/537.36",
-            'x-requested-with': "XMLHttpRequest",
-            'x-udemy-authorization': "Bearer NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X"
-            }
+    'accept': "application/json, text/plain, */*",
+    'accept-encoding': "gzip, deflate, br",
+    'accept-language': "en-GB,en;q=0.9,en-US;q=0.8,fr;q=0.7,es;q=0.6",
+    'authorization': "Bearer ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR",
+    'cookie': "ud_firstvisit=2017-06-23T18:55:55.461860+00:00:1dOTkJ:WY2XqecxQcOehOyCoJOpJnh8wjQ; __ssid=398d3243-e4e4-44d6-a7ff-898fd6c19c93; IR_PI=1498244157553-q4zrmr989lr; existing_user=true; optimizelyEndUserId=oeu1498244194449r0.3478516657705435; optimizelyBuckets=%7B%7D; _ga=GA1.1.2004580025.1498244157; ki_r=; _ga=GA1.2.2004580025.1498244157; __udmy_2_v57r=8693e451b3574b22aff387981ba148df; __udmyvstr=a6669421bf9fb59ad18528fcaac67735; EUCookieMessageShown=true; EUCookieMessageState=initial; ki_u=2e55ca0b-1216-413a-d959-ec85; ki_s=179864%3A1.0.0.0.1; seen=1; _gid=GA1.2.470225827.1516627888; _gid=GA1.1.470225827.1516627888; IR_gbd=udemy.com; access_token=ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR; csrftoken=5FdzKL7qBn7Lvw6nc18VguVZdyVshHwO; dj_session_id=hcxkl7jlfmu8xc3dvwb0ej3gd39lrwh2; client_id=bd2565cb7b0c313f5e9bae44961e8db2; __ar_v4=VH5RDLCI7NHB5GFMJDUBVW%3A20180121%3A2%7COKLCQMMNANCRNGGEOKKR5M%3A20180121%3A2%7C554CPNW4XBAX5EYKBL4HVU%3A20180121%3A2; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22false%22%2C%227514910721%22%3A%22Business%22%7D; IR_5420=1516629347118%7C0%7C1516627889634; ki_t=1498244158445%3B1516627895031%3B1516629347163%3B3%3B21; _px2=eyJ1IjoiZjJjN2YzNjAtZmY3Yi0xMWU3LWE1NjktZjVmYTA3NDljYjEzIiwidiI6IjA4MmRmMTEwLTdiMWYtMTFlNi05NDdiLTBmZTU5YzMyNzM4MCIsInQiOjE1MTY2Mjk4NDkyMzksImgiOiJjOTAzZTFhNzkyZTkwN2UzNGU3ZTU3Mzg1YTJiYTRiNjI0ZWIwYzZmN2Y2NjdhZTRkMzcxNDBhYWQ3ODYzOTgxIn0=; _px3=88d80501ee134e0f8f8a71b6fa8befc6aff0c4eb92e9a2a03c1c9d78fb5614da:b8UuK/Kf8UHksZrELzRefUgHOH+9nqntfaPB+4giI6wqPtKU93infJsbSZLldWWn2uenYwvKkQaDKxInI42P2g==:1000:q616mIiuLnJMYU1k+y+zAkrkSn+DmB/hKkTxwLr6DobtHfxMp+FLhvzJv5bK1SKzFd065EzzQBdIUTLZgrQrsQV5URdVvz33KpP9Q1/c8ubUZ70UL7dW0RywHBy7UNCgQowXh2LvMysawyksGzFqb8rKJAh2acTSG8mHMNT3G+w=; ud_rule_vars=\"eJyFjcsKgzAURH9Fsm2Ve_PQm3xLQKImJbRFGmM34r83SAulm65mMXPObCy7dPHZT_0zLjHPyVCrhZcKB6E6OXDuQhDUacLBoaQpmHGer9EzU7HNsptbcp_8Y_UlJ5e9LYVlHJBqwBrbCsgINKgaRUS8OwEYAMvOZRViKtRx_IeVgpMW3-xxPM5rWvzbkOP9x8B5hcIoaYRsUGtA9THsbH8BdMRGVg==:1edccV:kaOnDWYHtsBJbUE1KeqLmHF15_k\"; eva=\"SlFILR5ATzcTQht5XkBPfgZDHTxCQBYuU1EROkxTRXQDURFzWVNHMR1RWDZMWA5uAEMceUxYR3sBR1ZtTBEGI0MHCXsVQER8BkUJe1xVRXxMDg==\"",
+    'referer': "https://www.udemy.com/personalbrand/learn/v4/overview",
+    'user-agent': "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
+    'x-requested-with': "XMLHttpRequest",
+    'x-udemy-authorization': "Bearer ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR"
+    }
         
         response = requests.request("GET", url, headers=headers, params=querystring)
-        
+        #print (response.json())
         return (response.json()['results'])
-    except:
+        
+    except Exception as e:
+        print (e)
         return []
-
-# for course in open('udemy_courses.txt','r').read().split('\n'):
-#     course_id = str(get_course_id(course))
-#     print course_id
-#     #subscribe(course_id)
-
+o_course_id_file = open('udemy_courses_id.txt','w')
+for course in open('udemy_courses.txt','r').read().split('\n'):
+    course_id = str(get_course_id(course))
+    o_course_id_file.write (course_id)
+    o_course_id_file.flush()
+    print (course_id)
+    subscribe(course_id)
+o_course_id_file.close()
 headers1 = {
     'accept': "application/json, text/plain, */*",
-    'accept-encoding': "gzip, deflate, sdch",
-    'accept-language': "en-US,en;q=0.8",
-    'authorization': "Bearer NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X",
-    'Cache-Control': "no-cache",
-    'cookie': "ud_firstvisit=2017-12-27T09:40:49.872283+00:00:1eU8Cf:kpv689bNHPcjH86rax3jg7h4K0Y; new_user=true; existing_user=true; optimizelyEndUserId=oeu1514367595072r0.3008683293685195; __ssid=5e6ac83c-4459-4d3c-b121-c8db47997118; IR_gbd=udemy.com; client_id=bd2565cb7b0c313f5e9bae44961e8db2; dj_session_id=50y4uab8omqw53v6x9qgzpg2kmue141q; access_token=NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X; __ar_v4=554CPNW4XBAX5EYKBL4HVU%3A20180026%3A3%7COKLCQMMNANCRNGGEOKKR5M%3A20180026%3A3%7CVH5RDLCI7NHB5GFMJDUBVW%3A20180026%3A3; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22true%22%2C%227514910721%22%3A%22Marketing%22%7D; optimizelyBuckets=%7B%7D; csrftoken=pmQx1w6TViZZb9JGFZ89B1g5Snb5bMag; IR_PI=1514367605222.z2ykoz8l5hgrm; IR_5420=1514437940996%7C0%7C1514437619256; _ga=GA1.2.901433430.1514367598; _gid=GA1.2.1334547858.1514367598; _ga=GA1.1.901433430.1514367598; _gid=GA1.1.1334547858.1514367598; ki_t=1514367609858%3B1514434961071%3B1514438132129%3B2%3B34; ki_r=; intercom-session-sehj53dd=VzVPTHBUK1RIeEN6cmtxSmtZZkxvbmtBa2JjRmU5NHNRbEVFMTl3d3dmWWgzVUtiajYwdmRuZGJaK3NnY1NkNS0tb2RuWFRZYUllMzMrMjV6WDEwTnBWQT09--23421f86a23b949813169df6b26a2506ca832637; intercom-lou-sehj53dd=1; _px2=eyJ1IjoiYWUwZGI3MjAtZWI4ZC0xMWU3LWFiOGUtZWZmYWMxNjIyNzRjIiwidiI6IjJmYTQxMzgwLWVhZTItMTFlNy05MmJkLThmYjIwNGFiZjdmNyIsInQiOjE1MTQ0Mzg4MDc5NjYsImgiOiI0MDQwZjA5YjUxMWRiMDgwMzczOWFkMDQ2N2IyNjZiM2Y1NjA1NTE1Yjg5ZWM4MTUxZTRjYmIxNzY3OGQwMDQzIn0=; _px3=0272b54d9c2fb37697d8ab8564f866a100ed45b68eb1c570b28d71fd4ccffdaf:qtpGI2sqf0Q8XTiHPXPNzh+X54dgBR/O4xYrDBiM0UGmemDFCc33fks3n+GytqIfXEY68LXkxIoaB50owL6blA==:1000:KMUuzQNihNHJ2vZmbUNp5XIZkyD9NJoVKlSCZeeVKiDmHvw4a3mqQ+YDDRUXGyDvnpPW0U5iJNQnuUTd3rXUOMr8nTTkby3TqIWzLPzfSU3ha1l1UY3LJe/dHN29aq45xxyihnzlUKz0SPGMv/CtXBDPQ2UWLePdpgiWAHrJHRo=; eva=SlFILR5ATzcTQhtwXkBPfgRGGzwT; __udmy_2_v57r=ca304d07b826479ba05ed3125b9b0ee4; ud_rule_vars=eJx9jcsKwjAQRX-lZKstk5fT5FsCJWlGCSrFNHVT-u8GqiAIru7ics5ZWfH5QoXi8ExzKlO2o5egImDoxUmhCR40RcmFDiYAkbLjNF0TMduw1bGbn8uQ6bFQ3egLuXo4JoBjy0UrsAFjFVhlOqO1MuIAYAEcOzZveJyWPNOeH0q6_xo4t0JWSac19ii_DeeUq2Jn_9d7BG7ww25sewH0K0a2:1eUQbf:ZFwvtVq4mFQjH7wHMCrrlmieQhU; seen=1",
-    'pragma': "no-cache",
-    'referer': "https://www.udemy.com/heatmaps/learn/v4/t/lecture/3615464",
-    'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2683.0 Safari/537.36",
+    'accept-encoding': "gzip, deflate, br",
+    'accept-language': "en-GB,en;q=0.9,en-US;q=0.8,fr;q=0.7,es;q=0.6",
+    'authorization': "Bearer ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR",
+    'cookie': "ud_firstvisit=2017-06-23T18:55:55.461860+00:00:1dOTkJ:WY2XqecxQcOehOyCoJOpJnh8wjQ; __ssid=398d3243-e4e4-44d6-a7ff-898fd6c19c93; IR_PI=1498244157553-q4zrmr989lr; existing_user=true; optimizelyEndUserId=oeu1498244194449r0.3478516657705435; optimizelyBuckets=%7B%7D; _ga=GA1.1.2004580025.1498244157; ki_r=; _ga=GA1.2.2004580025.1498244157; __udmy_2_v57r=8693e451b3574b22aff387981ba148df; __udmyvstr=a6669421bf9fb59ad18528fcaac67735; EUCookieMessageShown=true; EUCookieMessageState=initial; ki_u=2e55ca0b-1216-413a-d959-ec85; ki_s=179864%3A1.0.0.0.1; seen=1; _gid=GA1.2.470225827.1516627888; _gid=GA1.1.470225827.1516627888; IR_gbd=udemy.com; access_token=ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR; csrftoken=5FdzKL7qBn7Lvw6nc18VguVZdyVshHwO; dj_session_id=hcxkl7jlfmu8xc3dvwb0ej3gd39lrwh2; client_id=bd2565cb7b0c313f5e9bae44961e8db2; __ar_v4=VH5RDLCI7NHB5GFMJDUBVW%3A20180121%3A2%7COKLCQMMNANCRNGGEOKKR5M%3A20180121%3A2%7C554CPNW4XBAX5EYKBL4HVU%3A20180121%3A2; optimizelySegments=%7B%22306102099%22%3A%22gc%22%2C%22306155008%22%3A%22direct%22%2C%22306161004%22%3A%22false%22%2C%227473112303%22%3A%22none%22%2C%227518841116%22%3A%22false%22%2C%227514910721%22%3A%22Business%22%7D; IR_5420=1516629347118%7C0%7C1516627889634; ki_t=1498244158445%3B1516627895031%3B1516629347163%3B3%3B21; _px2=eyJ1IjoiZjJjN2YzNjAtZmY3Yi0xMWU3LWE1NjktZjVmYTA3NDljYjEzIiwidiI6IjA4MmRmMTEwLTdiMWYtMTFlNi05NDdiLTBmZTU5YzMyNzM4MCIsInQiOjE1MTY2Mjk4NDkyMzksImgiOiJjOTAzZTFhNzkyZTkwN2UzNGU3ZTU3Mzg1YTJiYTRiNjI0ZWIwYzZmN2Y2NjdhZTRkMzcxNDBhYWQ3ODYzOTgxIn0=; _px3=88d80501ee134e0f8f8a71b6fa8befc6aff0c4eb92e9a2a03c1c9d78fb5614da:b8UuK/Kf8UHksZrELzRefUgHOH+9nqntfaPB+4giI6wqPtKU93infJsbSZLldWWn2uenYwvKkQaDKxInI42P2g==:1000:q616mIiuLnJMYU1k+y+zAkrkSn+DmB/hKkTxwLr6DobtHfxMp+FLhvzJv5bK1SKzFd065EzzQBdIUTLZgrQrsQV5URdVvz33KpP9Q1/c8ubUZ70UL7dW0RywHBy7UNCgQowXh2LvMysawyksGzFqb8rKJAh2acTSG8mHMNT3G+w=; ud_rule_vars=\"eJyFjcsKgzAURH9Fsm2Ve_PQm3xLQKImJbRFGmM34r83SAulm65mMXPObCy7dPHZT_0zLjHPyVCrhZcKB6E6OXDuQhDUacLBoaQpmHGer9EzU7HNsptbcp_8Y_UlJ5e9LYVlHJBqwBrbCsgINKgaRUS8OwEYAMvOZRViKtRx_IeVgpMW3-xxPM5rWvzbkOP9x8B5hcIoaYRsUGtA9THsbH8BdMRGVg==:1edccV:kaOnDWYHtsBJbUE1KeqLmHF15_k\"; eva=\"SlFILR5ATzcTQht5XkBPfgZDHTxCQBYuU1EROkxTRXQDURFzWVNHMR1RWDZMWA5uAEMceUxYR3sBR1ZtTBEGI0MHCXsVQER8BkUJe1xVRXxMDg==\"",
+    'referer': "https://www.udemy.com/personalbrand/learn/v4/overview",
+    'user-agent': "Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.132 Safari/537.36",
     'x-requested-with': "XMLHttpRequest",
-    'x-udemy-authorization': "Bearer NC0BM3LMlZIZ4GaRmvAyk6bCsklT6iaPBcDGJ01X"
+    'x-udemy-authorization': "Bearer ENYRfyPwkhA0dX7WCWBxCxufKPiKFLaQMv2IQPMR"
     }
 courses_url = open('udemy_courses.txt','r').read().split('\n')
 cu = 0
+#print ('I am here')
 for course in open('udemy_courses_id.txt','r').read().split('\n'):
     primary_folder = PyQuery(requests.get(courses_url[cu],headers=headers1).text)('title').text().split('|')[0].strip()
+    print (primary_folder)
     #reset_value=1 
     for i in get_videos_id(course):
         if i['_class'] == 'chapter':
             chapter_index = str(i['object_index'])
             chapter = str(i['object_index'])+'_'+i['title']
+            print (chapter)
             reset_value = 1
         else:
             try:

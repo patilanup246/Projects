@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from pyquery import PyQuery
 import requests
-
+import csv
 # f = open('info.txt','w')
 # for i in range(90,160):
 #     r = requests.get('https://websta.me/category?page={}&sort='.format(str(i)))
@@ -14,23 +14,37 @@ import requests
 
 
 f = open('info.txt','r').read()
-f1 = open('info_final.txt','w')
+output_f = open('insta_output.csv','w',encoding='utf-8', newline='')
+wr = csv.writer(output_f, quoting=csv.QUOTE_ALL)
 for pro in f.split('\n'):
-    ig_handle =  (pro)
-    print (pro)
-    r = requests.get('https://websta.me'+pro.split('\t')[0])
-    pq = PyQuery(r.text)
-    a = pq('.count.col-xs-4 strong').text().split(' ')
-    posts = a[0]
-    followers = a[1]
-    followings =  a[2]
-    print (a)
-    last_update_likes = pq('[class^="likesCount_"]').text()
-    for p in (pq('[class="media-attr"]')):
-        b = pq(p).text().split(' ')
-        break
-    
-    print (b)
-    
-    f1.write(pro.split('\t')[1]+'\t'+pq('.count.col-xs-4:nth-child(1) strong').text()+'\t'+pq('.count.col-xs-4:nth-child(2) strong').text()+'\t'+pq('.count.col-xs-4:nth-child(3) strong').text()+'\t'+pq('.userinfo-xs').text()+'\n')
-    f1.flush()
+    try:
+        details = []
+        ig_handle =  pro.split('\t')[1]
+        print (ig_handle)
+        details.append (ig_handle)
+        r = requests.get('https://websta.me'+pro.split('\t')[0])
+        pq = PyQuery(r.text)
+        a = pq('.count.col-xs-4 strong').text().split(' ')
+        details.append(pq('p.userinfo-xs').text())
+        posts = a[0]
+        followers = a[1]
+        followings =  a[2]
+        details.append(posts)
+        details.append(followers)
+        details.append(followings)
+        details.append(pq('.small-box.bg-red h3').text())
+        details.append(pq('.small-box.bg-yellow h3').text())
+        print (a)
+        last_update_likes = pq('[class^="likesCount_"]').text()
+        
+        for p in (pq('[class="media-attr"]')):
+            lc = pq(p).text().split(' ')
+            details.append(lc[0])
+            details.append(lc[2])
+            
+        
+        #print (details)
+        
+        wr.writerow(details)
+    except Exception as e:
+        print (e)

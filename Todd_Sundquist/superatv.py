@@ -8,7 +8,6 @@ import requests
 import re
 from pyquery import PyQuery
 import json
-import xmltodict, json
 import csv
 
 
@@ -27,6 +26,7 @@ def crawl_site():
         for l in p1('[class="product name product-item-name"] a'):
             #print (l.attrib['href'])
             links.append(l.attrib['href'])
+            print (l.attrib['href'])
            
     print (len(list(set(links))) )
     return list(set(links))
@@ -37,8 +37,9 @@ def crawl_site():
 #output_file = open('superatv.txt','w',encoding='utf-8')
 output_f = open('superatv_export.csv','w',encoding='utf-8', newline='')
 wr = csv.writer(output_f, quoting=csv.QUOTE_ALL)
+wr.writerow(['Product Type',    'Quantity',    'Collection',    'Vendor',    'Tags',    'meta descr',    'meta title',    'H1',    'SKU',    'Name',    'Category',    'Fitment',    'Fitment HTMl',    'URL',    'Price',    'Features',    'Features HTML',    'Details',    'Details HTMl',    'H2',    'Images',    'Option: 1',    'Option: 2',    'Option: 3'])
 #o = xmltodict.parse(requests.get('https://www.superatv.com/sitemap.xml').text)
-#for jj in o['urlset']['url']:
+#for jj in ['https://www.superatv.com/4500lb-synthetic-rope-atv-winch-with-wireless-remote-1']:
 for jj in crawl_site():
 #for jj in ['https://www.superatv.com/can-am-commander-800-1000-long-travel-axles-3-4-5-rhino']:
     try:
@@ -97,46 +98,59 @@ for jj in crawl_site():
             options         = ''
             
             j = (t)
-            
+            #print (json.dumps(j))
             skus = json.loads(re.findall(r'window.configurableSimpleSku = (.*?);',r)[0])
             print (skus)
              
              
             for sku in skus.keys():
-                temp = j['index'][sku]
-                print (temp)
-                options = []
-                for a in temp.keys():
+                try:
+                    temp = j['index'][sku]
+                    print (temp)
+                    options = []
+                    for a in temp.keys():
+                         
+                        for c in j['attributes'][a]['options']:
+                            if c['id'] == temp[a]:
+                                #print (str(skus[sku])+' : '+str(j['attributes'][a]['label'])+' : '+str(c['label']))
+                                options.append(str(j['attributes'][a]['label'])+' : '+str(c['label']))
+                                break
+                    images = []
+                    for i in j['images'][sku]:
+                        images.append(i['full'])
                      
-                    for c in j['attributes'][a]['options']:
-                        if c['id'] == temp[a]:
-                            #print (str(skus[sku])+' : '+str(j['attributes'][a]['label'])+' : '+str(c['label']))
-                            options.append(str(j['attributes'][a]['label'])+' : '+str(c['label']))
-                            break
-                images = []
-                for i in j['images'][sku]:
-                    images.append(i['full'])
+                    price = j['optionPrices'][sku]['finalPrice']['amount']
+                    sku = str(skus[sku])
+                    #options = '\t'.join(options)
+                    images = ', '.join(images)
                  
-                price = j['optionPrices'][sku]['finalPrice']['amount']
-                sku = str(skus[sku])
-                options = '\t'.join(options)
-                images = ', '.join(images)
-             
-                out = []
-                out.append(sku)
-                out.append(name)
-                out.append(category)
-                out.append(fitment.replace('Read More','.'))
-                out.append(fitment_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
-                out.append(url)
-                out.append(price)
-                out.append(features.replace('Read More','.'))
-                out.append(features_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
-                out.append(details.replace('Read More','.'))
-                out.append(details_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
-                out.append(images)
-                out.append(options)
-                wr.writerow(out)
+                    out = []
+                    out.append('')
+                    out.append('')
+                    out.append('')
+                    out.append('')
+                    out.append('')
+                    out.append('')
+                    out.append('')
+                    out.append('<h1>'+name+'</h1>')
+                    out.append(sku)
+                    out.append(name)
+                    out.append(category)
+                    out.append(fitment.replace('Read More','.'))
+                    out.append(fitment_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
+                    out.append(url)
+                    out.append(price)
+                    out.append(features.replace('Read More','.'))
+                    out.append(features_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
+                    out.append(details.replace('Read More','.'))
+                    out.append(details_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
+                    out.append('<h2>'+name+'</h2>')
+                    out.append(images)
+                    for b in options:
+                        out.append(b)
+                    wr.writerow(out)
+                except Exception as e:
+                    pass
                 #print (out)
             
         except Exception as e:
@@ -179,7 +193,7 @@ for jj in crawl_site():
                 url             = site
                 price           = ''
                 try:
-                    price = pq('[class="price"]').text()
+                    price = pq('[itemprop="price"] [class="price"]').text()
                 except:
                     pass
                 features        = ''
@@ -215,6 +229,14 @@ for jj in crawl_site():
                 images          = ', '.join(images)
                 options         = ''
                 out = []
+                out.append('')
+                out.append('')
+                out.append('')
+                out.append('')
+                out.append('')
+                out.append('')
+                out.append('')
+                out.append('<h1>'+name+'</h1>')
                 out.append(sku)
                 out.append(name)
                 out.append(category)
@@ -226,6 +248,7 @@ for jj in crawl_site():
                 out.append(features_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
                 out.append(details.replace('Read More','.'))
                 out.append(details_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
+                out.append('<h2>'+name+'</h2>')
                 out.append(images)
                 out.append(options)
                 wr.writerow(out)
@@ -303,10 +326,18 @@ for jj in crawl_site():
                              
                             price = j['optionPrices'][sku]['finalPrice']['amount']
                             sku = str(skus[sku])
-                            options = '\t'.join(options)
+                            #options = '\t'.join(options)
                             images = ', '.join(images)
                          
                             out = []
+                            out.append('')
+                            out.append('')
+                            out.append('')
+                            out.append('')
+                            out.append('')
+                            out.append('')
+                            out.append('')
+                            out.append('<h1>'+name+'</h1>')
                             out.append(sku)
                             out.append(name)
                             out.append(category)
@@ -318,8 +349,10 @@ for jj in crawl_site():
                             out.append(features_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
                             out.append(details.replace('Read More','.'))
                             out.append(details_html.replace('<a href="javascript:void(0);" class="view-more hidden"><span>Read More</span></a>',''))
+                            out.append('<h2>'+name+'</h2>')
                             out.append(images)
-                            out.append(options)
+                            for b in options:
+                                out.append(b)
                             wr.writerow(out)
                             #print (out)
                         break
