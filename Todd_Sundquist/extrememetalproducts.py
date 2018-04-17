@@ -11,6 +11,7 @@ from glob import glob
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+import re
 #driver = webdriver.Chrome(executable_path ='C:\\Users\\Administrator\\workspace\\Project\\Projects\\chromedriver\\chromedriver.exe')
 DRIVER = webdriver.Chrome()
 
@@ -51,6 +52,9 @@ for cat in categories:
             for h in pq('#wsm-prod-list-view .wsm-cat-title a'):
                 products.append (h.attrib['href'])
         else:
+            break
+        
+        if len(pq('#wsm-prod-list-view .wsm-cat-title a')) <60:
             break
         i+=1
       
@@ -96,7 +100,11 @@ for product in list(set(products)):
         details.append(pq('[itemprop="name"]').text())
         details.append('UTV Accessories')
         details.append(pq('#wsm-prod-tab-details [class="productInfo"]').text())
-        details.append(pq('#wsm-prod-tab-details [class="productInfo"]').html())
+        product_info = pq('#wsm-prod-tab-details [class="productInfo"]').html().strip().replace('\n','').replace('\r','').replace('</a>','')
+        for e in re.findall(r'<a(?:.*?)>', product_info):
+            product_info = product_info.replace(e,'')
+        details.append(product_info)
+        
 
         details.append(product)
         price = float(pq('[itemprop="price"]').text().strip().replace('$',''))
@@ -107,7 +115,10 @@ for product in list(set(products)):
         details.append('')
         details.append('')
         details.append(pq('#wsm-prod-tab-decrip .wsm-prod-tab-content').text())
-        details.append(pq('#wsm-prod-tab-decrip .wsm-prod-tab-content').html())
+        tab_info = pq('#wsm-prod-tab-decrip .wsm-prod-tab-content').html().strip().replace('\n','').replace('\r','').replace('</a>','')
+        for e in re.findall(r'<a(?:.*?)>', tab_info):
+            tab_info = tab_info.replace(e,'')
+        details.append(tab_info)
         details.append('<h2>'+pq('[itemprop="name"]').text()+'</h2>')
         images = []
         images.append(pq('.wsm_product_image_zoom').attr('href'))

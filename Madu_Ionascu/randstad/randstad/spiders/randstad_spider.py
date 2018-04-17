@@ -77,7 +77,7 @@ class randstad(scrapy.Spider):
             item['country'] = ''
         
         try:
-            item['job_title_raw']      =  str(posting_json['title'])
+            item['job_title_raw']      =  str(posting_json['title'].encode('utf-8'))
         except:
             item['job_title_raw'] = ''
         
@@ -121,7 +121,7 @@ class randstad(scrapy.Spider):
             item['salary_to'] = ''
         
         try:
-            item['salary_currency']    =  str(posting_json['baseSalary']['currency'])
+            item['salary_currency']    =  str(posting_json['baseSalary']['currency'].encode('utf-8'))
         except:
             item['salary_currency'] = ''
         
@@ -151,7 +151,7 @@ class randstad(scrapy.Spider):
             item['reference'] = ''
         
         try:
-            item['recruiter_raw']      =  str(pq('[id$="ContactLabel"]').text().split(',')[0]) 
+            item['recruiter_raw']      =  str(pq('[id$="ContactLabel"]').text().encode('utf-8').split(',')[0]) 
         except:
             item['recruiter_raw'] = ''
         

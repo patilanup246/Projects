@@ -7,10 +7,10 @@ import re, json, urllib
 #from selenium import webdriver
 import webbrowser
 from pyquery import PyQuery
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
-from Tkinter import *
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+# from Tkinter import *
 app = Flask(__name__)
 
 @app.route('/home')

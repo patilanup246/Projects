@@ -45,40 +45,42 @@ for c in inputs:
                 pwid = str(c[1].split('?')[0].split('/')[-1])
                 rw = requests.get('http://api.walmartlabs.com/v1/items/{}?apiKey=x4ucjjdxmfn8ghw5963je835&format=json'.format(pwid)).json()
                 
-                if not str(c[2]) == str(rw['salePrice']):
-                    issue = []
-                    issue.append(str(c[0]))
-                    issue.append(str(c[1]))
-                    issue.append(str(c[2]))
-                    issue.append(str(rw['salePrice']))
-                    issue.append(str(rw['stock']))
-                    wr1.writerow(issue)
-                    
+                #if not str(c[2]) == str(rw['salePrice']):
+                issue = []
+                issue.append(str(c[0]))
+                issue.append(str(c[1]))
+                issue.append(str(c[2]))
+                issue.append(str(rw['salePrice']))
+                issue.append(str(rw['stock']))
+                wr1.writerow(issue)
+                
             except Exception as e:
-                print (e)
+                pass
+                #print (e)
         if 'toysrus' in c[1]:
             try:
                 rw = requests.get(str(c[1]),headers=headers).text
                 print (str(c[1]))
                 j = json.loads (re.findall(r'window.__INITIAL_STATE__ = (.*)',rw)[0])
-                if not str(c[2]) == str(j['productDetails']['product']['price']):
-                    issue = []
-                    issue.append(str(c[0]))
-                    issue.append(str(c[1]))
-                    issue.append(str(c[2]))
-                    issue.append(str(j['productDetails']['product']['price']))
-                    if str(j['productDetails']['product']['isOutOfStock']) == 'False':
-                        try:
-                            issue.append(str(j['productDetails']['SKUsList'][0]['shipping']['shipToHome']['onlineStore']['productInventory']['quantity']))
-                        except:
-                            issue.append('Available')
-                    else:
+                #if not str(c[2]) == str(j['productDetails']['product']['salePrice']):
+                issue = []
+                issue.append(str(c[0]))
+                issue.append(str(c[1]))
+                issue.append(str(c[2]))
+                issue.append(str(j['productDetails']['product']['salePrice']))
+                if str(j['productDetails']['product']['isOutOfStock']) == 'False':
+                    try:
+                        issue.append(str(j['productDetails']['SKUsList'][0]['shipping']['shipToHome']['onlineStore']['productInventory']['quantity']))
+                    except:
                         issue.append('Not Available')
-                    wr1.writerow(issue)
+                else:
+                    issue.append('Not Available')
+                wr1.writerow(issue)
                     
                 
             except Exception as e:
-                print (e)
+                pass
+                #print (e)
             
                 
     i+=1
