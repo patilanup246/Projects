@@ -9,6 +9,35 @@ import json
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
 import time
+import csv
+output_f = open('sidebyside_export.csv','w',encoding='utf-8', newline='')
+wr = csv.writer(output_f, quoting=csv.QUOTE_ALL)
+wr.writerow(['URL',	'Title',	'Body HTML',	'Vendor',	'Image Src','Variant Position',	'Variant SKU',	'Variant Price','Option1 Name',	'Option1 Value',	'Option2 Name',	'Option2 Value',	'Option3 Name',	'Option3 Value'])
+
+
+
+def get_all_brands():
+    j_list = []
+    r = requests.get('https://www.sidebysidestuff.com/featured-brands.html').text
+    pq = PyQuery(r)
+    for p in pq('table [class="name"] a'):
+        j_obj = {}
+        j_obj['site'] = 'https://www.sidebysidestuff.com/'+p.attrib['href']
+        j_obj['name'] = p.text
+        j_list.append(j_obj)
+        
+    return j_list
+
+
+def get_all_brand_products(brand_site):
+    r = requests.get(brand_site).text
+    pq = PyQuery(r)
+    products = []
+    for p in pq('table [class="name"] a'):
+        products.append('https://www.sidebysidestuff.com/'+p.attrib['href'])
+        print (brand_site+' --> '+'https://www.sidebysidestuff.com/'+p.attrib['href'])
+    return products
+
 
 '''
 # def get_all_brands():
@@ -81,27 +110,63 @@ import time
 
 driver = webdriver.Chrome()
 
-driver.get('https://www.sidebysidestuff.com/full-hard-cab-enclosre-by-dfk-arctic-cat-prowler-hdx-700.html')
+for b in get_all_brands():
+    brand_products = get_all_brand_products(b['site'])
+    for u in brand_products:
+        try:
+            r=[[]]
+            driver.get(u)
 
-name        = driver.find_element_by_css_selector('[itemprop="name"]').text
-sku         = driver.find_element_by_css_selector('[id="itemCode"]').text
-brand       = driver.find_element_by_css_selector('[id="itemBrand"]').text
-orig_price  = driver.find_element_by_css_selector('[class="regPrice"]').text
+            url         = u
+            title       = driver.find_element_by_css_selector('[itemprop="name"]').text
+            sku         = driver.find_element_by_css_selector('[id="itemCode"]').text
+            vendor      = driver.find_element_by_css_selector('[id="itemBrand"]').text
+            body        = driver.find_element_by_css_selector('[itemprop="description"]').get_attribute('innerHTML')
 
-p = []
-for a in driver.find_elements_by_css_selector('[class="itemOption"] select'):
-    p.append(Select(a).options)
 
-r=[[]]
 
-for x in p:
-    r = [ i + [y] for y in x for i in r ]
+            p = []
+            for a in driver.find_elements_by_css_selector('[class="itemOption"] select')[:3]:
+                p.append(Select(a).options)
+
+
+            labels = []
+            for a in driver.find_elements_by_css_selector('[class="itemOption"] [class="label"]')[:3]:
+                labels.append(a.text)
+
+            for x in p:
+                r = [ i + [y] for y in x for i in r ]
+
+            images = []
+            for i in driver.find_elements_by_css_selector('[rel="prettyPhoto[gallery]"]'):
+                images.append(i.get_attribute('href'))
+
+
+            vp = 1
+            for m in r:
+                details = []
+                details.append(url)
+                details.append(title)
+                details.append(body)
+                details.append(vendor.replace('BRAND: ',''))
+                details.append('; '.join(images))
+                details.append(vp)
+                details.append(sku.replace('ITEM # ',''))
+                details.append (driver.find_element_by_css_selector('[class="salePrice"]').text)
+                li = 0
+                for n in m:
+                    n.click()
+                    details.append(labels[li])
+                    details.append (n.get_attribute('value'))
+                    li+=1
+                
+                
+                vp+=1
+                
+
+                wr.writerow(details)
+        except Exception as e:
+            print (e)
+            print (u)
     
-for m in r:
-    for n in m:
-        n.click()
-        print (n.get_attribute('value'))
-    print (driver.find_element_by_css_selector('[class="salePrice"]').text)
-    print ('\n\n')
-    #time.sleep(2)
-    
+driver.quit()
