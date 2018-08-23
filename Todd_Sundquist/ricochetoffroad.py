@@ -41,7 +41,7 @@ def get_products_links():
         
         if len(pq('[class="product-content"] a')) == 0:
             break
-        break
+        
     return products
       
 
@@ -76,7 +76,7 @@ for product in list(set(get_products_links())):
         details.append(pq('[itemprop="name"]').text())
         details.append('UTV Accessories')
         details.append(fitment)
-        details.append(fitment)
+        details.append(fitment.split('INCLUDES')[0].split('Includes')[0].split('includes')[0].split('Full Protection')[0].split('full protection')[0].split('FULL PROTECTION')[0])
         details.append(product)
         p1 = ''
         try:

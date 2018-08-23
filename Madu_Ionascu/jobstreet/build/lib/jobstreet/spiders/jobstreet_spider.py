@@ -130,7 +130,7 @@ class jobstreet(scrapy.Spider):
         except Exception as e:  
                 item['url']  =  ''
         try:  
-            item['posted_date']  =  str(pq('[itemprop="datePosted"]').text()) 
+            item['posted_date']  =  str(pq('[id="posting_date"] span').text()) 
         except Exception as e:  
             item['posted_date']  =  ''
         try:  

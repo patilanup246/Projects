@@ -22,7 +22,7 @@ i = 0
 for row in ws.rows:
     if i > 0:
         try:
-            proxy_value = '80.211.201.9:8888'#row[5].value
+            proxy_value = row[5].value
             email = row[3].value
             fn =    row[0].value
             ln =    row[1].value
@@ -67,5 +67,5 @@ for row in ws.rows:
         finally:
             driver.quit()
 
-        break
+        
     i+=1

@@ -31,7 +31,6 @@ def login(driver):
     driver.find_element_by_css_selector('.dropdown.btn-group .fti-loginBtn').click()
     driver.find_element_by_css_selector('[name="loginName"]').send_keys('FINEDGE2017')
     driver.find_element_by_css_selector('[name="loginPwd"]').send_keys('Finedge@9414')
-    driver.find_element_by_css_selector('[for*="rememberMe"] span').click()
     driver.find_element_by_css_selector('.login-submit-btn').click()
     time.sleep(3)
 
@@ -39,38 +38,60 @@ def login(driver):
 
 
 def get_report(driver, folio_num, tried,acco_type):
-
+    
     login(driver)
+    is_account_active = 0
+    try:    
+        driver.get('https://accounts.franklintempletonindia.com/advisor/#/myinvestors')
+        element_1 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="simple-btn-keyboard-nav"]')))
+        element_1.click()
+        is_account_active = 1
+        time.sleep(1)
+        for i in driver.find_elements_by_css_selector('[class="dropdown-menu"] [role="menuitem"] a'):
+            if i.text == 'Account No.':
+                i.click()
+                break
+        #time.sleep(3)
+        element_2 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[placeholder="search..."]')))
+        element_2.send_keys('2199911341009')
         
-    driver.get('https://accounts.franklintempletonindia.com/advisor/#/myinvestors')
-
-    driver.find_element_by_css_selector('[id="simple-btn-keyboard-nav"]').click()
-
-    for i in driver.find_elements_by_css_selector('[class="dropdown-menu"] [role="menuitem"] a'):
-        if i.text == 'Account No.':
-            i.click()
-            break
+        driver.find_element_by_css_selector('[ng-click="investorSearch()"]').click()
         
-    driver.find_element_by_css_selector('[placeholder="search..."]').send_keys('0359910184970')
-    
-    driver.find_element_by_css_selector('[ng-hide="hideSearch"].icon-fti_search').click()
-    
-    
-    
-    driver.find_element_by_css_selector('[name="ctl00$MiddleContent$txtAcNo"]').send_keys(folio_num)
-    driver.find_element_by_css_selector('[name="ctl00$MiddleContent$btnQuery"]').click()
-    
-    element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="ctl00_MiddleContent_dgQueryDets"] tbody tr:nth-of-type(2) td:nth-of-type(4) a[href]')))
-    element.click()
-    
-    driver.find_element_by_css_selector('[id="rdDetailed"]').click()
-    time.sleep(0.3)
-    driver.find_element_by_css_selector('[id="chkAllItems"]').click()
-    driver.find_element_by_css_selector('[name="btnViewAndPrint"]').click()
 
-    element_frame = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, 'iframe[src*=AccountStmts]')))
+        
+        time.sleep(5)
+        driver.find_element_by_css_selector('[class="ui-grid-cell-contents ftic-uhName ng-binding ng-scope"]').click()
+        time.sleep(5)
+        driver.find_element_by_css_selector('[uib-btn-radio="\'accountview\'"]').click()
+        
+        time.sleep(5)
+        element_4 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[ng-options="option.label | translate for option in filterOptions"]')))
+        select = Select(element_4)
+        select.select_by_visible_text('Since inception')
+        
+        time.sleep(5)
+        
+        driver.find_element_by_css_selector('[class="panel-orange-btn btn m0 pull-left"]').click()
+        
+        time.sleep(5)
+        driver.find_element_by_css_selector('[class="icon-fti_download bold"]').click()
+        time.sleep(5)
+        driver.find_element_by_css_selector('[ng-click="download(\'pdf\')"]').click()
+        #
+        
+
+    except Exception as e:
+        print(e)
     
-    return (element_frame.get_attribute('src'))
+    if is_account_active:
+        pass
+        element_3 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[class="icon icon-fti-Logout"]')))
+        element_3.click()
+         
+        time.sleep(2)
+        driver.execute_script('''$('[ng-if*="btnNo1!=="]')[0].click()''')
+
+        
 
 
 #login(DRIVER)
@@ -80,4 +101,4 @@ except Exception as e:
     print (e)
 finally:
     pass
-    #DRIVER.quit()
+    DRIVER.quit()

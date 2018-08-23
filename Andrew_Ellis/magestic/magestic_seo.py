@@ -52,23 +52,24 @@ for input_url in read_input:
         'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
         'accept-encoding': "gzip, deflate, br",
         'accept-language': "en-US,en;q=0.8",
-        'cookie': "_ga=GA1.2.929496905.1521231313; STOK=3meVWSIpSsIFsCm0rXueIFBar6; _gid=GA1.2.1990622334.1523633053; _gat=1"
+        'cookie': "_ga=GA1.2.2082427430.1523663013; STOK=R90aCJs3Pyb1rSFfs1OzKxfmk7; _gid=GA1.2.650315579.1524976007; _gat=1"
         }
 
     response = requests.request("POST", url.strip(), data=payload, headers=headers,verify=False)
+    print (response.text)
     
     i = 0
     reader = csv.reader(response.text, delimiter=',')
     for r in reader:
-        
+         
         details = []
         if i > 0:
-            print (r)
-            
+            #print (r)
+             
             wr.writerow(r)
-            
+             
         i+=1
-    #time.sleep(10)
-    
+    time.sleep(10)
+     
     break
     

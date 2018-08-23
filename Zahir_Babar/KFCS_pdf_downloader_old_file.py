@@ -17,8 +17,8 @@ import os
 import re
 lock = threading.Lock()
 import shutil
+
 from pyvirtualdisplay import Display
-  
 display = Display(visible=0, size=(1280, 1024))
 display.start()
 
@@ -45,6 +45,7 @@ OUTPUT_DIRECTORY = "/opt/tomcat/webapps/ROOT/output/"
 KARVY_THREADS = 1
 CAMS_THREADS = 1
 SUNDARAM_THREADS = 1
+FRANKLIN_THREADS = 1
 
 POLLING_TIME = 600
 
@@ -80,6 +81,18 @@ def start_webdriver_sundaram(id1, folio_num):
     chrome_options.add_argument("no-sandbox")
     #return webdriver.Chrome(chrome_options=chrome_options)
     return webdriver.Chrome('./chromedriver',chrome_options=chrome_options, service_args=["--verbose", "--log-path=script_logs_sundaram.log"])
+
+
+def start_webdriver_franklin(id1, folio_num):
+    site_name = str(id1)+'_'+str(folio_num)
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {
+        "download.default_directory" : os.getcwd()+'\\FRANKLIN\\'+site_name
+        }
+    chrome_options.add_experimental_option("prefs",prefs)
+    chrome_options.add_argument("no-sandbox")
+    #return webdriver.Chrome(chrome_options=chrome_options)
+    return webdriver.Chrome('./chromedriver',chrome_options=chrome_options, service_args=["--verbose", "--log-path=script_logs_franklin.log"])
     
     
 def login_karvy(driver,user,pass1):
@@ -99,6 +112,14 @@ def login_sundaram(driver,user, pass1):
     driver.find_element_by_css_selector('[class="iceInpTxt"]').send_keys(user)
     driver.find_element_by_css_selector('[class="iceInpSecrt"]').send_keys(pass1)
     driver.find_element_by_css_selector('[class="iceCmdBtn button"]').click()
+    
+def login_franklin(driver,user, pass1):
+    driver.get('https://www.franklintempletonindia.com/')
+    driver.find_element_by_css_selector('.dropdown.btn-group .fti-loginBtn').click()
+    driver.find_element_by_css_selector('[name="loginName"]').send_keys(user)
+    driver.find_element_by_css_selector('[name="loginPwd"]').send_keys(pass1)
+    driver.find_element_by_css_selector('.login-submit-btn').click()
+    time.sleep(3)
 
 
 
@@ -112,23 +133,23 @@ def get_report_karvy(driver, folio_num,pdf,type_file,user,pass1):
         driver.find_element_by_css_selector('[name="ctl00$MiddleContent$txtAcNo"]').send_keys(folio_num)
         driver.find_element_by_css_selector('[name="ctl00$MiddleContent$btnQuery"]').click()
         
-        element = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="ctl00_MiddleContent_dgQueryDets"] tbody tr:nth-of-type(2) td:nth-of-type(4) a[href]')))
+        element = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="ctl00_MiddleContent_dgQueryDets"] tbody tr:nth-of-type(2) td:nth-of-type(4) a[href]')))
         element.click()
         
         try:
-            element2 = WebDriverWait(driver, 1).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="rdDetailed"]')))
+            element2 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="rdDetailed"]')))
             element2.click()
         except Exception as e:
             pass
         
-        time.sleep(0.3)
-        element3 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="chkAllItems"]')))
+        time.sleep(1)
+        element3 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="chkAllItems"]')))
         element3.click()
         
-        element4 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="btnViewAndPrint"]')))
+        element4 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="btnViewAndPrint"]')))
         element4.click()
         
-        element_frame = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="hidName"][value]')))
+        element_frame = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="hidName"][value]')))
         pdf = str(element_frame.get_attribute('value'))
         return pdf
 
@@ -154,36 +175,95 @@ def get_report_cams(driver, folio_num,acc,user,pass1):
     driver.find_element_by_css_selector('[name="rdStmtType"][value="FULL"]').click()
     driver.find_element_by_css_selector('[name="btnview"]').click()
     
-    time.sleep(3)
+    time.sleep(30)
     
 def get_report_sundaram(driver, folio_num, tried,user,pass1):
 
     login_sundaram(driver,user,pass1)
        
-    element_0 = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[src="images/report.jpg"]')))
+    element_0 = WebDriverWait(driver, 600).until(EC.visibility_of_element_located((By.CSS_SELECTOR, '[src="images/report.jpg"]')))
     element_0.click()
     
-    element_1 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:investorsoafolio2:_2"]')))
+    element_1 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:investorsoafolio2:_2"]')))
     element_1.click()
     
-    element_2 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="searchBrokF:textfolio"]')))
+    element_2 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name="searchBrokF:textfolio"]')))
     element_2.send_keys(folio_num)
     time.sleep(0.5)
-    element_3 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name*="searchBrokF:j_idt"]')))
+    element_3 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[name*="searchBrokF:j_idt"]')))
     element_3.click()
     time.sleep(0.5)
     element_3.click()
     time.sleep(0.5)
-    element_4 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:SlctSoaBrokerM:_4"]')))
+    element_4 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:SlctSoaBrokerM:_4"]')))
     element_4.click()
     time.sleep(0.5)
-    element_5 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:SlctFileModeBrokerM:_2"]')))
+    element_5 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:SlctFileModeBrokerM:_2"]')))
     element_5.click()
     time.sleep(0.5)
-    element_6 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="searchBrokF:j_idt232"]')))
+    element_6 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[src*="button_proceed.gif"]')))
     element_6.click()
     
-    time.sleep(3)
+    time.sleep(30)
+    
+def get_report_franklin(driver, folio_num, tried,user,pass1):
+
+    login_franklin(driver,user,pass1)
+       
+    is_account_active = 0
+    try:    
+        driver.get('https://accounts.franklintempletonindia.com/advisor/#/myinvestors')
+        time.sleep(5)
+        element_1 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[id="simple-btn-keyboard-nav"]')))
+        element_1.click()
+        is_account_active = 1
+        time.sleep(1)
+        for i in driver.find_elements_by_css_selector('[class="dropdown-menu"] [role="menuitem"] a'):
+            if i.text == 'Account No.':
+                i.click()
+                break
+        time.sleep(5)
+        element_2 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[placeholder="search..."]')))
+        element_2.send_keys(folio_num)
+        
+        driver.find_element_by_css_selector('[ng-click="investorSearch()"]').click()
+        
+    
+        
+        time.sleep(5)
+        driver.find_element_by_css_selector('[class="ui-grid-cell-contents ftic-uhName ng-binding ng-scope"]').click()
+        time.sleep(5)
+        driver.find_element_by_css_selector('[uib-btn-radio="\'accountview\'"]').click()
+        
+        time.sleep(5)
+        element_4 = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[ng-options="option.label | translate for option in filterOptions"]')))
+        select = Select(element_4)
+        select.select_by_visible_text('Since inception')
+        
+        time.sleep(5)
+        
+        driver.find_element_by_css_selector('[class="panel-orange-btn btn m0 pull-left"]').click()
+        
+        time.sleep(5)
+        driver.find_element_by_css_selector('[class="icon-fti_download bold"]').click()
+        time.sleep(5)
+        driver.find_element_by_css_selector('[ng-click="download(\'pdf\')"]').click()
+        
+        
+        time.sleep(30)
+        
+    
+    except Exception as e:
+        print(e)
+    
+    if is_account_active:
+        
+        element_3 = WebDriverWait(driver, 600).until(EC.presence_of_element_located((By.CSS_SELECTOR, '[class="icon icon-fti-Logout"]')))
+        element_3.click()
+         
+        time.sleep(2)
+        driver.execute_script('''$('[ng-if*="btnNo1!=="]')[0].click()''')
+        
     
 
 def update_table_karvy(report_url, id1, folio_num):
@@ -277,6 +357,39 @@ def update_table_sundaram(report_url, id1, folio_num):
         db.rollback()
             
     db.close()
+    
+def update_table_franklin(report_url, id1, folio_num):
+    db = MySQLdb.connect(DB_ADDRESS,DB_USER,DB_PASS,DB_NAME )
+    cursor = db.cursor()
+
+    if folio_num:   
+        sql_download_url = "UPDATE soa_requests SET download_url = '{}'   WHERE id = {};".format(str(id1)+'_'+str(folio_num).replace('/','')+'.pdf',id1)
+        sql_status = "UPDATE soa_requests SET status = {}   WHERE id = {};".format(1,id1)
+        
+        try:
+            site_name = str(id1)+'_'+str(folio_num)
+            path =  os.getcwd()+'\\FRANKLIN\\'+site_name
+            print (os.listdir(path))
+            for file in os.listdir(path):
+                print (file)
+                os.rename(os.path.join(path, file), os.path.join(path, site_name+'.pdf'))
+                shutil.move(os.path.join(path, site_name+'.pdf'), OUTPUT_DIRECTORY+site_name+'.pdf')
+        except Exception as e:
+            print (e)
+        
+    else:
+        sql_download_url = "UPDATE soa_requests SET download_url = '{}'   WHERE id = {};".format(report_url,id1)
+        sql_status = "UPDATE soa_requests SET retry_counter = retry_counter + 1   WHERE id = {};".format(id1)
+        
+    try:
+        cursor.execute(sql_download_url)
+        cursor.execute(sql_status)
+        db.commit()
+    except Exception as e:
+        print (e)
+        db.rollback()
+            
+    db.close()
 
 
 
@@ -339,6 +452,26 @@ def worker_sundaram(q):
                 DRIVER.quit()
             q.task_done()
 
+
+def worker_franklin(q):
+    is_instantiated = 0
+
+    while not q.empty():
+        try:
+            t = q.get()
+            DRIVER = start_webdriver_franklin(t[0], t[1])
+            is_instantiated = 1
+            get_report_franklin(DRIVER, t[1],t[2],t[3],t[4])
+            
+            update_table_franklin('', t[0],t[1])
+        except Exception as e:
+            update_table_franklin(str(e), t[0],'')
+            print (e)
+        finally:
+            if is_instantiated == 1:
+                time.sleep(3)
+                DRIVER.quit()
+            q.task_done()
     
     
 while True:
@@ -355,8 +488,8 @@ while True:
         print (row)
         q_karvy.put(row)
     db.close()
-     
-     
+        
+        
     db = MySQLdb.connect(DB_ADDRESS,DB_USER,DB_PASS,DB_NAME)
     cursor = db.cursor()
     cursor.execute("SELECT SR.id, SR.folio_number,SR.amc_code, NOA.cams_fundsnet_id, NOA.cams_fundsnet_pwd from soa_requests as SR INNER JOIN no_of_arn as NOA ON NOA.arn_no = SR.arn_no where SR.data_type = 'cams' and SR.status = 0 and SR.retry_counter <=3 and NOA.cams_fundsnet_id != '' and NOA.cams_fundsnet_pwd != ''")
@@ -365,26 +498,26 @@ while True:
         print (row)
         q_cams.put(row)
     db.close()
-    
-    
+      
+      
     db = MySQLdb.connect(DB_ADDRESS,DB_USER,DB_PASS,DB_NAME)
     cursor = db.cursor()
-    cursor.execute("SELECT SR.id, SR.folio_number,SR.amc_code, NOA.sbn_uname, NOA.sbn_pwd from soa_requests as SR INNER JOIN no_of_arn as NOA ON NOA.arn_no = SR.arn_no where SR.data_type = 'bnp' and SR.status = 0 and SR.retry_counter <=3 and NOA.sbn_uname != '' and NOA.sbn_pwd != ''")
+    cursor.execute("SELECT SR.id, SR.folio_number,SR.amc_code, NOA.sbn_uname, NOA.sbn_pwd from soa_requests as SR INNER JOIN no_of_arn as NOA ON NOA.arn_no = SR.arn_no where SR.data_type = 'sundaram' and SR.status = 0 and SR.retry_counter <=3 and NOA.sbn_uname != '' and NOA.sbn_pwd != ''")
     rows = cursor.fetchall()
     for row in rows:
         print (row)
         q_sundaram.put(row)
     db.close()
-#     
-#     
-#     db = MySQLdb.connect(DB_ADDRESS,DB_USER,DB_PASS,DB_NAME)
-#     cursor = db.cursor()
-#     cursor.execute("SELECT id, folio_number,amc_code from soa_requests where data_type = 'franklin' and status = 0")
-#     rows = cursor.fetchall()
-#     for row in rows:
-#         print (row)
-#         q_franklin.put(row)
-#     db.close()
+     
+     
+    db = MySQLdb.connect(DB_ADDRESS,DB_USER,DB_PASS,DB_NAME)
+    cursor = db.cursor()
+    cursor.execute("SELECT SR.id, SR.folio_number,SR.amc_code, NOA.ft_distributor_login, NOA.ft_distributor_pwd from soa_requests as SR INNER JOIN no_of_arn as NOA ON NOA.arn_no = SR.arn_no where SR.data_type = 'franklin' and SR.status = 0 and SR.retry_counter <=3 and NOA.karvy_uname != '' and NOA.karvy_pwd != ''")
+    rows = cursor.fetchall()
+    for row in rows:
+        print (row)
+        q_franklin.put(row)
+    db.close()
     
     
     
@@ -393,19 +526,24 @@ while True:
     for i in range(KARVY_THREADS):
         t = threading.Thread(target=worker_karvy, args=(q_karvy, ))
         t.start()  
-     
-     
+      
+      
     for i in range(CAMS_THREADS):
         t = threading.Thread(target=worker_cams, args=(q_cams, ))
         t.start()
-         
+          
     for i in range(SUNDARAM_THREADS):
         t = threading.Thread(target=worker_sundaram, args=(q_sundaram, ))
+        t.start()
+        
+    for i in range(FRANKLIN_THREADS):
+        t = threading.Thread(target=worker_franklin, args=(q_franklin, ))
         t.start()
         
     q_karvy.join()
     q_cams.join()
     q_sundaram.join()
+    q_franklin.join()
     
     
     

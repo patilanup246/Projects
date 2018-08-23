@@ -7,93 +7,44 @@ from pyquery import PyQuery
 import re
 class Mycareersfuture(scrapy.Spider):
     name="mycareersfuture"
-    #all_urls = open('out.txt').read().split('\n')[0:100]
-    all_urls = ['2d50db7646a0ffb529d70fd61003206e',
-'17e835f7d5e002f49d63e425ca067935',
-'cb2b6b2036290c18558c374719f5c77e',
-'20e4e21021c2bedc10ee3ff3d52d4c06',
-'c2ccf1630f1cce4b1f09158193a5b325',
-'31eaf203dc799503fd210d4edd09fc4a',
-'3268b71233336e9a46260fb7307e0f79',
-'ea98628acc3461f40c6df12f52fbe9ac',
-'9eed5007098aee37ee48b707f393a84c',
-'f56e464d319d501fac851e9df83faf3d',
-'b639b8d4830a8dea2ca848ab0918e28b',
-'e0d2386d52984aa579b8543e714879d2',
-'c1fbc2712cdc0dbb134dd973f9b6c935',
-'8e075534700bc95876ff158c51705ddf',
-'784b58cb931ebb6f8231fb08b59e3a52',
-'81ee5c4c6c85695186376b3d591f7c07',
-'e1b5cf8d95e5aa66704c64008c79972d',
-'11a828ef917c6c505504571167715b1e',
-'b217451745a7d470b63c217196b2e27b',
-'e24e0a1e7da71ce2c43872244983107f',
-'1ea9b0f87f8645156e1e11fe5c724a2c',
-'f9378edaf5a743b165527053b4243b44',
-'2eea1cbdff6ba0d39aafff3f0334e0de',
-'9747d1409d3a0c522036da43b4206f62',
-'3a4b8ef2ddfb9624589d5c986d097335',
-'2aed12b60d9f30bf3d772686a3285385',
-'ca45e90bf330dd1cd144ae3539d7bb3e',
-'e9d451541096fd56413e06c5a86a8f15',
-'46e0be435afa8e72d61ef93c8cbd57b7',
-'f6f6e34b8a97f0f20ceb3e52555f4efb',
-'fd90ce9e859576aa90335c1e279f511d',
-'228d40661cb2d382a8fba4fba94f6074',
-'138fb3cdb5f83ba91d13a7e581c2bece',
-'c442817d7547d2b6723e52fe7662bfed',
-'d9732da75ab18766d5c8d96c77de9d51',
-'e918ece307e3fd5c6925ccbf8c4fa850',
-'5d2441b950b138bd2b6fc29440049f1b',
-'a16e4030df5b42fadc807601a110afb4',
-'58978f4377fede851e1bb7e4b091aab1',
-'dfa6390e9ca181ad76bde89c90029306',
-'183dc30d5b7865edbc4b366c3c4baa1c',
-'336c24c164a3db72b7bbade95e231086',
-'13ab0898dc404420a2f5174c498cdf2a',
-'83eb17ceb906963933165a8081abd81f',
-'cc1328cd3e7a40e7fffb77c6206a944a',
-'50dbdb66e1f8b66e3524081193157ce5',
-'ff2bd4b9c16c0bae0e5abd3794cb587a',
-'ca52330325ca2c81cc48a0f21fa6f92f',
-'a1c4a1a96a50d9957a57209c78bb9ee3',
-'2d796ec2ad1b43f37e5e40b1c6f87fde']
+    all_urls = []
+    
     scraped_country = ''
-    def __init__(self, country = '', *args,**kwargs):
-        pass
+    def __init__(self, *args,**kwargs):
         
-#         page  = 1
-# 
-#         while page < 382:
-#             headers = {
-#                 'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-#                 'accept-encoding': "gzip, deflate, br",
-#                 'accept-language': "en-US,en;q=0.9",
-#                 'cache-control': "no-cache",
-#                 'connection': "keep-alive",
-#                 'host': "api.mycareersfuture.sg",
-#                 'pragma': "no-cache",
-#                 'upgrade-insecure-requests': "1",
-#                 'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
-#                 }
-#             r_m = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&page={}'.format(str(page)),headers=headers)
-#             pq_r = json.loads(r_m.json())
-#             a = []
-#             
-#             is_yesterday = 0
-#             for i in pq_r('[id*="job_ad"]'):
-#                 if not 'https://www.jobstreet.com.sg/en/job/1' == pq_r(i)('.position-title-link').attr('href'):
-#                     if not 'Yesterday' in pq_r(i)('.job-date-text').text():
-#                         self.all_urls.append(pq_r(i)('.position-title-link').attr('href'))
-#                     else:
-#                         is_yesterday = 1
-#                     
-#             if is_yesterday:
-#                 break
-#                     
-#             
-# 
-#             page+=1
+        
+        collection_headers = {
+                'content-type': "application/json",
+                'authorization': "Basic MjY5NWZjNjFkMGMxNGUyYWIxMDRlMTgyNTVlN2JiYzQ6"
+            }
+            
+        last_guid = requests.get('https://storage.scrapinghub.com/collections/280316/s/mycareersfuture/uuid', headers=collection_headers).json()['value']
+        
+        page_num = 1
+        found = 0
+        while True:
+            if found == 0:
+                r_all = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&sortBy=new_posting_date&page={}'.format(str(page_num))).json()
+                
+                for rn in r_all['jobs']:
+                    if not rn['uuid'] in last_guid:
+                        self.all_urls.append(rn['uuid'])
+                    else:
+                        found = 1
+                        break
+            else:
+                break
+            print ('page_num')
+            print (page_num)
+            page_num +=1
+            
+            
+            
+        if  self.all_urls:
+            payload = {"_key": 'uuid', "value": self.all_urls}
+            sent_request = requests.request("POST", 'https://storage.scrapinghub.com/collections/280316/s/mycareersfuture', json=payload, headers=collection_headers)
+            print ('sent_request\n\n'+sent_request.text)
+        
  
         
 
@@ -212,9 +163,26 @@ class Mycareersfuture(scrapy.Spider):
             item['country'] = 'SG'
         except Exception as e:  
             print (e)
-             
+            
+        building = ''
+        block = ''
+        street = ''
+        postal_code = ''
+        
+        if r['building']:
+            building = str(r['building'])+' '
+        
+        if r['block']:
+            block = str(r['block'])+' '
+            
+        if r['street']:
+            street = str(r['street']) + ' '
+            
+        if r['postal_code']:
+            postal_code = str(r['postal_code'])
+        
         try:
-            item['location'] = r['building']+' '+r['block']+' '+r['street'] + ' '+ r['postal_code']
+            item['location'] = building + block + street + postal_code
         except Exception as e:  
             print (e)
              

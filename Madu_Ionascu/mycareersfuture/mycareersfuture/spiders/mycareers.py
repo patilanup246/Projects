@@ -7,44 +7,44 @@ from pyquery import PyQuery
 import re
 class Mycareersfuture(scrapy.Spider):
     name="mycareersfuture"
-    all_urls = open('out.txt').read().split('\n')[0:100]
+    all_urls = []
     
     scraped_country = ''
-    def __init__(self, country = '', *args,**kwargs):
-        pass
+    def __init__(self, *args,**kwargs):
         
-#         page  = 1
-# 
-#         while page < 382:
-#             headers = {
-#                 'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-#                 'accept-encoding': "gzip, deflate, br",
-#                 'accept-language': "en-US,en;q=0.9",
-#                 'cache-control': "no-cache",
-#                 'connection': "keep-alive",
-#                 'host': "api.mycareersfuture.sg",
-#                 'pragma': "no-cache",
-#                 'upgrade-insecure-requests': "1",
-#                 'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36"
-#                 }
-#             r_m = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&page={}'.format(str(page)),headers=headers)
-#             pq_r = json.loads(r_m.json())
-#             a = []
-#             
-#             is_yesterday = 0
-#             for i in pq_r('[id*="job_ad"]'):
-#                 if not 'https://www.jobstreet.com.sg/en/job/1' == pq_r(i)('.position-title-link').attr('href'):
-#                     if not 'Yesterday' in pq_r(i)('.job-date-text').text():
-#                         self.all_urls.append(pq_r(i)('.position-title-link').attr('href'))
-#                     else:
-#                         is_yesterday = 1
-#                     
-#             if is_yesterday:
-#                 break
-#                     
-#             
-# 
-#             page+=1
+        
+        collection_headers = {
+                'content-type': "application/json",
+                'authorization': "Basic MjY5NWZjNjFkMGMxNGUyYWIxMDRlMTgyNTVlN2JiYzQ6"
+            }
+            
+        last_guid = requests.get('https://storage.scrapinghub.com/collections/280316/s/mycareersfuture/uuid', headers=collection_headers).json()['value']
+        
+        page_num = 1
+        found = 0
+        while True:
+            if found == 0:
+                r_all = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&sortBy=new_posting_date&page={}'.format(str(page_num))).json()
+                
+                for rn in r_all['jobs']:
+                    if not rn['uuid'] in last_guid:
+                        self.all_urls.append(rn['uuid'])
+                    else:
+                        found = 1
+                        break
+            else:
+                break
+            print ('page_num')
+            print (page_num)
+            page_num +=1
+            
+            
+            
+        if  self.all_urls:
+            payload = {"_key": 'uuid', "value": self.all_urls}
+            sent_request = requests.request("POST", 'https://storage.scrapinghub.com/collections/280316/s/mycareersfuture', json=payload, headers=collection_headers)
+            print ('sent_request\n\n'+sent_request.text)
+        
  
         
 
@@ -163,9 +163,26 @@ class Mycareersfuture(scrapy.Spider):
             item['country'] = 'SG'
         except Exception as e:  
             print (e)
-             
+            
+        building = ''
+        block = ''
+        street = ''
+        postal_code = ''
+        
+        if r['building']:
+            building = str(r['building'])+' '
+        
+        if r['block']:
+            block = str(r['block'])+' '
+            
+        if r['street']:
+            street = str(r['street']) + ' '
+            
+        if r['postal_code']:
+            postal_code = str(r['postal_code'])
+        
         try:
-            item['location'] = r['building']+' '+r['block']+' '+r['street'] + ' '+ r['postal_code']
+            item['location'] = building + block + street + postal_code
         except Exception as e:  
             print (e)
              
