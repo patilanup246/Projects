@@ -152,7 +152,7 @@ for b in get_all_brands():
                 details.append('; '.join(images))
                 details.append(vp)
                 details.append(sku.replace('ITEM # ',''))
-                details.append (driver.find_element_by_css_selector('[class="salePrice"]').text)
+                details.append ('')
                 li = 0
                 for n in m:
                     n.click()
@@ -160,6 +160,7 @@ for b in get_all_brands():
                     details.append (n.get_attribute('value'))
                     li+=1
                 
+                details[7] = driver.find_element_by_css_selector('[class="salePrice"]').text
                 
                 vp+=1
                 
