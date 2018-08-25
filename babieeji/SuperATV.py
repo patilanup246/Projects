@@ -26,7 +26,8 @@ driver.get('https://www.superatv.com/1-75-2-cage-light-mounting-brackets')
 
 
 select_opt = driver.find_element_by_css_selector('[class="super-attribute-select"]')
-options = Select(select_opt.select_by_index(1))
+options = Select(select_opt)
+options.select_by_index(1)
 print(select_opt.text)
 
 

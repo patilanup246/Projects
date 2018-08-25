@@ -109,11 +109,15 @@ def get_all_brand_products(brand_site):
 '''
 
 driver = webdriver.Chrome()
+applicable_brands = [x.lower() for x in open('brands.txt').read().split('\n')]
 
 for b in get_all_brands():
+    if not b['name'].strip().lower() in applicable_brands:
+        continue
     brand_products = get_all_brand_products(b['site'])
     for u in brand_products:
         try:
+            print ('Extracting : '+u)
             r=[[]]
             driver.get(u)
 
