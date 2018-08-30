@@ -28,7 +28,9 @@ driver.get('http://thehobbycenter.org/index.php?q=node/133')
 # duration = driver.find_elements_by_css_selector('[class="views-field-field-duration-value"]')
 # date = driver.find_elements_by_css_selector('[class="date-display-single"]')
 # hall_value = driver.find_elements_by_css_selector('[class="views-field-field-hall-value"]')
-# learn_more_link = driver.find_elements_by_css_selector('[class="views-field-field-learn-url"]').get_attribute('href')
+# learn_more_link = driver.find_elements_by_css_selector('[class="views-field-field-learn-url"] a')
+for l in learn_more_link:
+    print (l.get_attribute('href'))
 content = driver.find_elements_by_css_selector('[class="field-content"]')
 
 
@@ -54,5 +56,11 @@ for c in content:
 # print(title, duration, content, date, hall_value)
 
 # print(image.get_attribute('src'))
+
+
+for a in driver.find_elements_by_css_selector('.views-row'):
+    print (a.find_element_by_css_selector('views-field-field-duration-value').text)
+    print (a.find_element_by_css_selector('views-field-field-duration-value').text)
+
 time.sleep(5)
 driver.quit()

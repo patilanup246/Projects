@@ -16,23 +16,23 @@ from selenium import webdriver
 from openpyxl.reader.excel import load_workbook
 
 
-search_queries = open(sys.argv[1]).read().split('\n')
+search_queries = open(input('For what input file do you want to scrape ziprecruiter : \n')).read().split('\n')
 #search_queries = [str(sys.argv[1])]
 #print (search_queries)
 try:
-    DAYS = str(sys.argv[2])
+    DAYS = input('How old should the job posts be : \n')#str(sys.argv[2])
 except: 
-    DAYS = '10'
+    DAYS = ''
 
 try:
-    SALARY = str(sys.argv[3])
+    SALARY = input('How much should miminum salary be : \n')#str(sys.argv[2])
 except: 
-    SALARY = '70000'
+    SALARY = ''
 
-
-try:
-    EMPLOYMENT = 'employment_type:'+str(sys.argv[4])
-except: 
+EMPLOYMENT_type = input('What should be the employment type : \n')#str(sys.argv[2])
+if EMPLOYMENT_type:
+    EMPLOYMENT = 'employment_type:'+EMPLOYMENT_type
+else: 
     EMPLOYMENT = ''
 
 

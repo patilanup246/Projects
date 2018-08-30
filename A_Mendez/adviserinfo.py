@@ -1,1130 +1,164 @@
 # -*- coding: utf-8 -*-
 from selenium import webdriver
 import re, time, csv, pyautogui
-driver = webdriver.Chrome()
-driver.get('https://www.adviserinfo.sec.gov/IAPD/IAPDSearch.aspx')
-
-
-
-time.sleep(5)
-driver.find_element_by_css_selector('[title="No, thanks"]').click()
-try:
-    driver.execute_script('''$('[class="__acs "]')[0].remove();''')
-except:
-    pass
+import threading
+from queue import Queue
+from pyquery import PyQuery
+import requests
 output_f = open('adviserinfo.csv','w',encoding='utf-8', newline='')
 wr = csv.writer(output_f, quoting=csv.QUOTE_ALL)
 wr.writerow(['Individual CRD#',	'Result Found?',	'Name',	'Individual CRD #',	'Alternate Names',	'Firm 1 Name ',	'Firm 1 CRD # ',	'Firm 2 Name ',	'Firm 2 CRD #',	'Registration Type 1',	'Registration Type 2',	'Registration Status 1',	'Registration Status 2'])
 
 
-crns = [6878209,
-6873655,
-6868189,
-6868005,
-6867611,
-6867587,
-6866589,
-6865209,
-6859991,
-6857187,
-6857083,
-6856985,
-6856003,
-6855321,
-6853893,
-6853453,
-6850469,
-6850449,
-6850175,
-6849711,
-6849707,
-6849649,
-6849031,
-6849019,
-6848925,
-6848707,
-6848653,
-6848261,
-6847721,
-6845295,
-6844155,
-6844017,
-6843811,
-6843651,
-6843633,
-6843609,
-6840845,
-6840111,
-6838909,
-6838695,
-6837721,
-6837557,
-6836495,
-6836449,
-6836211,
-6836187,
-6836155,
-6836139,
-6836121,
-6836119,
-6835781,
-6835623,
-6835327,
-6834281,
-6834125,
-6833885,
-6833537,
-6832093,
-6832071,
-6831951,
-6831675,
-6831273,
-6831179,
-6830715,
-6830423,
-6830241,
-6830225,
-6829775,
-6829667,
-6829561,
-6829379,
-6829365,
-6829297,
-6829285,
-6828241,
-6827381,
-6827033,
-6827019,
-6826769,
-6826663,
-6826035,
-6824973,
-6824789,
-6824561,
-6824511,
-6824479,
-6824435,
-6824393,
-6824391,
-6823929,
-6823891,
-6823779,
-6823649,
-6823637,
-6822957,
-6822943,
-6822781,
-6822751,
-6822729,
-6822707,
-6822685,
-6822669,
-6822663,
-6822617,
-6822589,
-6822243,
-6821985,
-6821981,
-6821971,
-6821875,
-6821669,
-6821591,
-6821517,
-6821427,
-6821361,
-6821275,
-6820991,
-6820987,
-6820753,
-6820605,
-6820531,
-6820275,
-6819639,
-6819137,
-6818931,
-6818595,
-6817433,
-6817427,
-6817289,
-6817277,
-6817211,
-6817069,
-6817043,
-6816941,
-6816843,
-6816799,
-6816719,
-6816591,
-6816495,
-6816111,
-6816065,
-6816039,
-6815813,
-6815731,
-6814983,
-6814951,
-6814945,
-6814599,
-6814597,
-6814465,
-6813385,
-6813347,
-6813343,
-6812983,
-6812797,
-6811919,
-6811883,
-6811747,
-6811355,
-6811193,
-6810613,
-6810377,
-6809995,
-6809261,
-6809251,
-6809141,
-6809133,
-6808925,
-6808653,
-6808385,
-6808333,
-6808261,
-6808181,
-6808119,
-6808109,
-6808059,
-6807665,
-6807501,
-6807449,
-6806697,
-6806691,
-6806685,
-6806121,
-6806057,
-6805863,
-6805463,
-6805207,
-6804425,
-6804133,
-6804121,
-6803867,
-6803783,
-6803543,
-6803453,
-6803287,
-6803245,
-6803233,
-6803059,
-6803049,
-6803029,
-6801165,
-6800993,
-6800247,
-6799845,
-6799615,
-6799537,
-6799429,
-6799413,
-6799393,
-6798377,
-6798261,
-6798059,
-6797521,
-6797427,
-6797293,
-6797199,
-6797071,
-6796639,
-6796521,
-6796415,
-6796183,
-6795697,
-6795355,
-6794785,
-6794759,
-6794711,
-6793869,
-6793391,
-6792641,
-6792545,
-6792353,
-6792119,
-6791975,
-6791943,
-6791921,
-6791603,
-6791595,
-6791491,
-6791391,
-6791207,
-6791201,
-6791193,
-6791183,
-6791023,
-6790961,
-6790383,
-6790123,
-6789697,
-6788903,
-6788735,
-6788723,
-6788413,
-6788411,
-6788261,
-6787725,
-6787613,
-6787547,
-6787475,
-6787469,
-6787395,
-6786485,
-6786451,
-6786447,
-6786349,
-6785833,
-6785819,
-6785611,
-6784745,
-6784653,
-6784525,
-6784279,
-6784273,
-6784193,
-6784041,
-6783965,
-6782951,
-6782589,
-6782381,
-6781945,
-6781839,
-6781167,
-6781165,
-6781139,
-6780867,
-6780373,
-6780371,
-6780359,
-6780355,
-6780353,
-6780349,
-6780345,
-6780305,
-6780287,
-6780261,
-6780253,
-6780197,
-6779871,
-6779813,
-6779811,
-6779801,
-6779787,
-6779785,
-6779403,
-6779401,
-6779209,
-6778809,
-6778795,
-6778555,
-6778535,
-6778493,
-6778205,
-6778201,
-6778113,
-6778111,
-6778107,
-6777459,
-6777431,
-6777309,
-6776969,
-6776685,
-6776581,
-6776359,
-6776193,
-6776013,
-6775745,
-6775629,
-6775257,
-6775131,
-6774843,
-6774835,
-6774731,
-6774703,
-6774655,
-6774529,
-6774515,
-6774251,
-6773853,
-6773511,
-6773197,
-6773053,
-6772777,
-6772719,
-6772605,
-6772549,
-6772431,
-6772219,
-6772057,
-6771777,
-6771683,
-6771673,
-6771585,
-6771537,
-6771487,
-6771387,
-6771215,
-6771213,
-6771005,
-6770989,
-6770967,
-6770591,
-6770559,
-6770539,
-6770039,
-6770001,
-6769985,
-6769851,
-6769833,
-6769425,
-6769239,
-6768779,
-6768775,
-6768713,
-6768685,
-6768453,
-6768355,
-6768249,
-6768225,
-6768217,
-6768153,
-6767909,
-6767491,
-6767393,
-6767387,
-6767357,
-6767211,
-6766541,
-6766363,
-6765931,
-6765863,
-6765845,
-6765715,
-6765689,
-6765683,
-6765671,
-6765479,
-6765373,
-6765357,
-6765341,
-6765049,
-6764971,
-6764849,
-6764831,
-6764813,
-6764455,
-6764299,
-6763963,
-6763897,
-6763737,
-6763185,
-6762831,
-6762645,
-6762629,
-6762197,
-6761645,
-6761333,
-6761129,
-6760967,
-6760835,
-6760755,
-6760699,
-6760691,
-6760665,
-6760593,
-6760581,
-6760473,
-6759827,
-6759727,
-6759287,
-6759083,
-6758939,
-6758907,
-6758593,
-6758481,
-6758365,
-6758341,
-6758177,
-6758025,
-6757977,
-6757905,
-6757895,
-6757891,
-6757849,
-6757805,
-6757719,
-6757715,
-6757649,
-6757645,
-6757611,
-6757593,
-6757537,
-6757447,
-6757423,
-6757357,
-6757141,
-6757109,
-6757033,
-6756797,
-6756783,
-6756781,
-6756711,
-6756689,
-6756683,
-6756675,
-6756673,
-6756637,
-6756575,
-6756495,
-6756299,
-6756291,
-6756223,
-6756205,
-6756093,
-6756087,
-6755921,
-6755777,
-6755623,
-6755605,
-6755523,
-6755343,
-6755133,
-6755067,
-6755059,
-6755015,
-6754683,
-6754279,
-6754235,
-6754217,
-6754191,
-6753769,
-6753649,
-6753625,
-6753437,
-6753363,
-6753341,
-6753073,
-6753043,
-6752883,
-6752791,
-6752609,
-6752561,
-6752533,
-6752457,
-6752391,
-6752313,
-6752297,
-6752205,
-6752119,
-6752007,
-6751947,
-6751743,
-6751533,
-6751457,
-6751417,
-6751413,
-6751401,
-6751231,
-6751083,
-6750749,
-6750451,
-6750281,
-6750265,
-6750125,
-6749771,
-6749715,
-6749635,
-6749621,
-6749555,
-6749457,
-6749375,
-6749337,
-6749305,
-6749297,
-6749293,
-6749287,
-6749091,
-6749085,
-6748931,
-6748865,
-6748849,
-6748761,
-6748759,
-6748593,
-6748557,
-6748529,
-6748493,
-6748483,
-6748395,
-6748295,
-6748013,
-6747999,
-6747697,
-6747695,
-6747595,
-6747553,
-6747389,
-6747023,
-6746783,
-6746727,
-6746693,
-6746295,
-6746265,
-6746259,
-6746129,
-6745903,
-6745877,
-6745843,
-6745759,
-6745755,
-6745753,
-6745715,
-6745687,
-6745685,
-6745677,
-6745599,
-6745595,
-6745583,
-6745543,
-6745519,
-6745441,
-6745131,
-6744999,
-6744825,
-6744787,
-6744783,
-6744697,
-6744585,
-6744567,
-6744455,
-6744437,
-6744243,
-6743911,
-6743905,
-6743891,
-6743817,
-6743789,
-6743731,
-6743507,
-6743475,
-6743363,
-6743317,
-6743229,
-6743199,
-6743173,
-6743167,
-6743165,
-6743161,
-6743155,
-6743125,
-6743117,
-6743029,
-6742851,
-6742823,
-6742587,
-6742559,
-6742549,
-6742509,
-6742497,
-6742477,
-6742157,
-6741785,
-6741727,
-6741549,
-6741405,
-6741333,
-6741247,
-6741239,
-6741237,
-6740917,
-6740597,
-6740535,
-6740407,
-6740379,
-6740337,
-6740287,
-6739977,
-6739917,
-6739835,
-6739793,
-6739787,
-6739611,
-6739581,
-6739567,
-6739321,
-6739307,
-6739291,
-6739287,
-6739283,
-6739233,
-6739085,
-6738995,
-6738939,
-6738813,
-6738651,
-6738645,
-6738639,
-6738613,
-6738529,
-6738469,
-6738465,
-6738461,
-6738421,
-6738123,
-6737681,
-6737357,
-6737309,
-6737303,
-6737263,
-6737177,
-6737175,
-6737129,
-6737117,
-6737035,
-6736969,
-6736651,
-6736461,
-6736445,
-6736383,
-6735575,
-6735539,
-6735479,
-6735437,
-6735431,
-6735133,
-6735043,
-6735019,
-6735017,
-6734963,
-6734867,
-6734841,
-6734721,
-6734691,
-6734685,
-6734595,
-6734571,
-6734489,
-6734477,
-6734307,
-6734215,
-6733945,
-6733933,
-6733931,
-6733813,
-6733687,
-6733469,
-6733435,
-6733305,
-6733251,
-6733107,
-6733067,
-6733049,
-6732979,
-6732855,
-6732775,
-6732769,
-6732745,
-6732729,
-6732725,
-6732723,
-6732715,
-6732523,
-6732515,
-6732513,
-6732469,
-6732455,
-6731937,
-6731925,
-6731919,
-6731899,
-6731897,
-6731689,
-6731603,
-6731499,
-6731433,
-6731251,
-6731231,
-6731221,
-6731211,
-6731119,
-6731091,
-6731025,
-6730887,
-6730835,
-6730777,
-6730769,
-6730703,
-6730589,
-6730473,
-6730447,
-6730371,
-6730191,
-6730189,
-6730105,
-6730067,
-6730065,
-6730003,
-6729941,
-6729933,
-6729845,
-6729807,
-6729805,
-6729803,
-6729797,
-6729795,
-6729791,
-6729771,
-6729729,
-6729519,
-6729501,
-6729481,
-6729385,
-6729371,
-6729325,
-6729289,
-6729259,
-6729231,
-6729205,
-6729151,
-6728953,
-6728749,
-6728525,
-6728519,
-6728501,
-6728493,
-6728475,
-6728473,
-6728397,
-6728155,
-6728137,
-6728111,
-6728029,
-6728025,
-6728023,
-6728019,
-6728005,
-6727999,
-6727967,
-6727769,
-6727765,
-6727689,
-6727629,
-6727569,
-6727509,
-6727437,
-6727413,
-6727343,
-6727293,
-6727221,
-6727219,
-6727215,
-6727191,
-6727161,
-6727095,
-6727031,
-6726803,
-6726779,
-6726729,
-6726601,
-6726527,
-6726359,
-6726297,
-6726265,
-6726249,
-6726187,
-6726081,
-6726071,
-6725991,
-6725959,
-6725957,
-6725939,
-6725857,
-6725527,
-6725513,
-6725459,
-6725359,
-6725307,
-6725199,
-6725047,
-6725045,
-6724991,
-6724983,
-6724961,
-6724937,
-6724923,
-6724781,
-6724543,
-6724343,
-6724235,
-6724233,
-6724181,
-6724153,
-6724067,
-6724045,
-6723905,
-6723753,
-6723751,
-6723507,
-6723465,
-6723175,
-6723133,
-6723045,
-6722987,
-6722957,
-6722915,
-6722735,
-6722551,
-6722437,
-6722435,
-6722429,
-6722377,
-6722333,
-6722209,
-6722201,
-6722153,
-6722123,
-6722089,
-6721903,
-6721887,
-6721767,
-6721763,
-6721589,
-6721583,
-6721471,
-6721405,
-6721237,
-6721199,
-6721149,
-6721097,
-6721041,
-6721031,
-6720997,
-6720913,
-6720911,
-6720861,
-6720843,
-6720797,
-6720783,
-6720725,
-6720693,
-6720625,
-6720567,
-6720481,
-6720451,
-6720445,
-6720361,
-6719833,
-6719805,
-6719803,
-6719707,
-6719667,
-6719659,
-6719621,
-6719517,
-6719467,
-6719339,
-6719283,
-6719191,
-6719115,
-6719033,
-6719007,
-6718925,
-6718827,
-6718769,
-6718763,
-6718723,
-6718721,
-6718499,
-6718435,
-6718425,
-6718379,
-6718375,
-6718333,
-6718261,
-6718165,
-6718055,
-6717909,
-6717817,
-6717717,
-6717621,
-6717601,
-6717531,
-6717307,
-6717097,
-6716993,
-6716869,
-6716829,
-6716663,
-6716601,
-6716501,
-6716177,
-6716065,
-6716027,
-6716007,
-6715769,
-6715619,
-6715521,
-6715489,
-6715477,
-6715423,
-6715403,
-6715337,
-6715289,
-6715007,
-6715001,
-6714983,
-6714957,
-6714811,
-6714643,
-6714409,
-6714397,
-6714381,
-6714369,
-6714357,
-6714339,
-6714335,
-6714297,
-6714281,
-6714275,
-6714271,
-6714265,
-6714221,
-6714163,
-6714111,
-6714099,
-6714043,
-6714009,
-6713985,
-6713975,
-6713965,
-6713959,
-6713923,
-6713895,
-6713829,
-6713621,
-6713559,
-6713551,
-6713533,
-6713495,
-6713423,
-6713417,
-6713343
-    ]
-
-for crn in crns:
-    try:
-        driver.execute_script('''$('[class="__acs "]')[0].remove();''')
-    except:
-        pass
-    crn_input = driver.find_element_by_css_selector('[title="Individual"]')
-    crn_input.clear()
-    crn_input.send_keys(str(crn))
-
-    driver.find_element_by_css_selector('[id*="searchBtn"]').click()
+crns = open('input_crns.txt').read().split('\n')
 
 
-    try:
-        #check if result element is present
-        driver.find_element_by_css_selector('[class="searchresultscriteria"]')
+def worker(q):
+
+    while not q.empty():
+        try:
+            crn = q.get()
+            print (crn)
+
+            url = "https://www.adviserinfo.sec.gov/IAPD/default.aspx"
+
+            payload = "__EVENTTARGET=ctl00%24cphMain%24sbox%24searchBtn&__EVENTARGUMENT=&__VIEWSTATE=%2FwEPDwUKLTUyNTc5ODEzNw9kFgJmD2QWBAIBDxYCHgRUZXh0BTZJQVBEIC0gSW52ZXN0bWVudCBBZHZpc2VyIFB1YmxpYyBEaXNjbG9zdXJlIC0gSG9tZXBhZ2VkAgMPZBYCAgUPZBYCAgEPDxYCHgtDbGVhclNlYXJjaGdkFgoCAQ8WAh4HVmlzaWJsZWhkAgkPD2QWAh4Kb25LZXlQcmVzcwVBcmV0dXJuIEF1dG9TdWJtaXRPblRleHRCb3goJ2N0bDAwX2NwaE1haW5fc2JveF9zZWFyY2hCdG4nLGV2ZW50KTtkAg0PD2QWAh8DBUFyZXR1cm4gQXV0b1N1Ym1pdE9uVGV4dEJveCgnY3RsMDBfY3BoTWFpbl9zYm94X3NlYXJjaEJ0bicsZXZlbnQpO2QCDw8QDxYGHg5EYXRhVmFsdWVGaWVsZAUCSUQeDURhdGFUZXh0RmllbGQFBVZhbHVlHgtfIURhdGFCb3VuZGcWAh8DBUFyZXR1cm4gQXV0b1N1Ym1pdE9uVGV4dEJveCgnY3RsMDBfY3BoTWFpbl9zYm94X3NlYXJjaEJ0bicsZXZlbnQpOxAVAwc1IE1pbGVzCDE1IE1pbGVzCDI1IE1pbGVzFQMBNQIxNQIyNRQrAwNnZ2dkZAIRDw9kFgIfAwVBcmV0dXJuIEF1dG9TdWJtaXRPblRleHRCb3goJ2N0bDAwX2NwaE1haW5fc2JveF9zZWFyY2hCdG4nLGV2ZW50KTtkGAEFHl9fQ29udHJvbHNSZXF1aXJlUG9zdEJhY2tLZXlfXxYDBRtjdGwwMCRjcGhNYWluJHNib3gkcmRvSW5kdmwFGmN0bDAwJGNwaE1haW4kc2JveCRyZG9GaXJtBRpjdGwwMCRjcGhNYWluJHNib3gkcmRvRmlybYOn6X3A1%2FfkToB9oSFLeTK2b2FTD%2FupTdzqfIfFqmfl&__VIEWSTATEGENERATOR=B3BE8327&__EVENTVALIDATION=%2FwEdAAsiWdW%2B8TvH6zz2AprlH6%2Fp1ldPi%2BNmWsyZ9j%2B9Ukh8yyTXTCu5PKoKHtvTrDD%2ByWjGgZ%2BqCb%2FTt6O46qY3UtIGe%2BW5OtsFLj1nhfrXYd3Ueryb0TCsorBeQnRZFWZRzEac3LbRP1tOrCsDsAaMwmp2qZCL%2Fhrv6eC9FxxEPmS2dD7WMtZFfP0mzsYsrU6fWou%2BO8vcQy82htdhaRoO306SxraF8PRnNlQTKOVQ14NG9TFKm3ZQkJxCuozf6SRdTp8Wy4zNJvo8UktlA02B64tB&ctl00%24cphMain%24sbox%24searchScope=rdoIndvl&ctl00%24cphMain%24sbox%24txtIndvl="+str(crn)+"&ctl00%24cphMain%24sbox%24txtAtFirm=&ctl00%24cphMain%24sbox%24txtFirm=&ctl00%24cphMain%24sbox%24ddlZipRange=5&ctl00%24cphMain%24sbox%24txtZip="
+            headers = {
+                'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+                'accept-encoding': "gzip, deflate, br",
+                'accept-language': "en-US,en;q=0.9",
+                'cache-control': "max-age=0",
+                'connection': "keep-alive",
+                'content-length': "1629",
+                'content-type': "application/x-www-form-urlencoded",
+                'host': "www.adviserinfo.sec.gov",
+                'origin': "https://www.adviserinfo.sec.gov",
+                'referer': "https://www.adviserinfo.sec.gov/IAPD/default.aspx",
+                'upgrade-insecure-requests': "1",
+                'user-agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+                }
+
+            response = requests.request("POST", url, data=payload, headers=headers)
+
+            pq = PyQuery(response.text)
+
+            # crn_input = driver.find_element_by_css_selector('[title="Individual"]')
+            # crn_input.clear()
+            # crn_input.send_keys(str(crn))
+
+            # driver.find_element_by_css_selector('[id*="searchBtn"]').click()
+
+
+            if pq('[class="searchresultscriteria"]'):
+
+                details = []
+
+                #crn
+                details.append (crn)
+                try:
+                    #result number
+                    details.append (pq('[class="searchresultscriteriacol1"]').text())
+                except:
+                    details.append ('')
+
+                try:
+                    #name
+                    details.append (pq('[class="displayname"]').text())
+                except:
+                    details.append ('')
+
+                try:
+                    #crd #
+                    details.append (pq('[class="displaycrd"]').text())
+                except:
+                    details.append ('')
+
+                try:
+                    #other names
+                    details.append (pq('span[id*="OtherNames"]').text())
+                except:
+                    details.append ('')
+
+                details.append('')
+                details.append('')
+                details.append('')
+                details.append('')
+
+                try:
+                    #separatinf firm and firmid
+                    firms = pq('[id*="Item_divAddress"]').text().strip()
+
+                    z = re.finditer('(.*?) \(CRD# (.*?)\)',firms)
+
+                    matches = 5
+                    for r in z:
+                        details[matches] = r.groups()[0]
+                        matches+=1
+                        details[matches] = r.groups()[1]
+                        matches+=1
+                except Exception as e:
+                    print (e)
+
+
+                details.append('')
+                details.append('')
+                details.append('')
+                details.append('')
+
+                try:
+                    #broker registration type
+                    details[9] = pq('[id$="ucIndvlItem_divBroc"]').text().split('\n')[0]
+                except:
+                    pass
+
+                try:
+                    #broker registration status
+                    details[11] = pq('[id$="ucIndvlItem_divBroc"] div').text()
+                except:
+                    pass
+
+                try:
+                    #investor registration type
+                    details[10] = pq('[id$="ucIndvlItem_divIA"]').text().split('\n')[0]
+                except:
+                    pass
+
+                try:
+                    #investor registration status
+                    details[12] = pq('[id$="ucIndvlItem_divIA"] div').text()
+                except:
+                    pass
+
+                
+
+            else:
+                # # Take screenshot
+                # pic = pyautogui.screenshot()
         
-        details = []
-
-        #crn
-        details.append (crn)
-        try:
-            #result number
-            details.append (driver.find_element_by_css_selector('[class="searchresultscriteriacol1"]').text)
-        except:
-            details.append ('')
-
-        try:
-            #name
-            details.append (driver.find_element_by_css_selector('[class="displayname"]').text)
-        except:
-            details.append ('')
-
-        try:
-            #crd #
-            details.append (driver.find_element_by_css_selector('[class="displaycrd"]').text)
-        except:
-            details.append ('')
-
-        try:
-            #other names
-            details.append (driver.find_element_by_css_selector('span[id*="OtherNames"]').text)
-        except:
-            details.append ('')
-
-        details.append('')
-        details.append('')
-        details.append('')
-        details.append('')
-
-        try:
-            #separatinf firm and firmid
-            firms = driver.find_element_by_css_selector('[id*="Item_divAddress"]').text.strip()
-
-            z = re.finditer('(.*?) \(CRD# (.*?)\)',firms)
-
-            matches = 5
-            for r in z:
-                details[matches] = r.groups()[0]
-                matches+=1
-                details[matches] = r.groups()[1]
-                matches+=1
+                # # Save the image
+                # pic.save('IAPD/'+str(crn)+'.png') 
+                details = []
+                details.append(crn)
+                details.append('No match has been found for the information you provided.')
+            print (details)
+            wr.writerow(details)
         except Exception as e:
             print (e)
+        finally:
+            q.task_done()
 
-
-        details.append('')
-        details.append('')
-        details.append('')
-        details.append('')
-
-        try:
-            #broker registration type
-            details[9] = driver.find_element_by_css_selector('[id$="ucIndvlItem_divBroc"]').text.split('\n')[0]
-        except:
-            pass
-
-        try:
-            #broker registration status
-            details[11] = driver.find_element_by_css_selector('[id$="ucIndvlItem_divBroc"] div').text
-        except:
-            pass
-
-        try:
-            #investor registration type
-            details[10] = driver.find_element_by_css_selector('[id$="ucIndvlItem_divIA"]').text.split('\n')[0]
-        except:
-            pass
-
-        try:
-            #investor registration status
-            details[12] = driver.find_element_by_css_selector('[id$="ucIndvlItem_divIA"] div').text
-        except:
-            pass
-
-        
-
-    except Exception as e:
-        # Take screenshot
-        pic = pyautogui.screenshot()
+q = Queue()
+for i in crns:
+    q.put(i)
  
-        # Save the image
-        pic.save('IAPD/'+str(crn)+'.png') 
-        details = []
-        details.append(crn)
-        details.append('No match has been found for the information you provided.')
+startime = time.time()
+for i in range(10):
+    #print i
+    t = threading.Thread(target=worker, args=(q, ))
+    t.start()
+q.join()
+endtime = time.time()
+print (endtime-startime)
 
-    wr.writerow(details)
-
-driver.quit()
+    #print (details)
+#driver.quit()
