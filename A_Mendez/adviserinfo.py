@@ -159,6 +159,3 @@ for i in range(10):
 q.join()
 endtime = time.time()
 print (endtime-startime)
-
-    #print (details)
-#driver.quit()

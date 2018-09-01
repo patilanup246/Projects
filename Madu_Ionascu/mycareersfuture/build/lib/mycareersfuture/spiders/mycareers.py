@@ -24,14 +24,19 @@ class Mycareersfuture(scrapy.Spider):
         found = 0
         while True:
             if found == 0:
-                r_all = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&sortBy=new_posting_date&page={}'.format(str(page_num))).json()
-                
-                for rn in r_all['jobs']:
-                    if not rn['uuid'] in last_guid:
-                        self.all_urls.append(rn['uuid'])
-                    else:
-                        found = 1
+                try:
+                    r_all = requests.get('https://api.mycareersfuture.sg/jobs?limit=50&sortBy=new_posting_date&page={}'.format(str(page_num))).json()
+                    for rn in r_all['jobs']:
+                        if not rn['uuid'] in last_guid:
+                            self.all_urls.append(rn['uuid'])
+                        else:
+                            found = 1
+                            break
+
+                    if not r_all['jobs']:
                         break
+                except:
+                    break
             else:
                 break
             print ('page_num')
@@ -95,11 +100,11 @@ class Mycareersfuture(scrapy.Spider):
             print (e)
         
         plevels = []
-        for pl in r['position_levels']:
+        for pl in r.get('position_levels',[]):
             plevels.append(pl)
         
         categories = []
-        for cat in r['categories']:
+        for cat in r.get('categories',[]):
             categories.append(cat)
         
         try:

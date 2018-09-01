@@ -214,7 +214,7 @@ class jobstreet(scrapy.Spider):
         except Exception as e:  
                 item['location']  =  ''
         try:  
-            item['description']  =  pq('[itemprop="description"]').text()  
+            item['description']  =  pq('[id="job_description"]').text()  
         except Exception as e:  
                 item['description']  =  ''
 
