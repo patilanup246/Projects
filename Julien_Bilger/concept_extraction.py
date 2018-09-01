@@ -27,7 +27,7 @@ headers = {
 
 
 
-readCSV1 = csv.reader(open(sys.argv[1],encoding='utf-8'), delimiter=',')
+readCSV1 = csv.reader(open(sys.argv[1],encoding='ISO-8859-1'), delimiter=',')
 
 
 
